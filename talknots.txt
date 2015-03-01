@@ -1,0 +1,359 @@
+A. Introduce
+   1. who I am, steps of the talk
+   2. (Dome slide) Only call to authority, If you find you self
+   doubting me or what I'm saying, just remember this slide.
+   3. "you may notice some resemblances"
+   4. "()" "clojure logo"
+B. Motivate
+   Obligatory Quotes
+   "Not everything is awesome" - this quote has nothing to do with my
+   talk :)
+   Burt Reynolds - with big hair photo
+   Have cljsbuild running in background 
+   Code demo showing fix, but fix with broken image link
+   Navigate through the slide show again and fix the image link to a
+   Rich Hickey image.
+
+   Now use fiwheel to fix the following quotes:
+   "A tool addresses human needs by amplifying human capabilities."
+   Burt Reynolds
+   "a tool converts what we can do into what we want to do"
+   Burt Reynolds (change css as well)
+
+*******
+
+S: What Magic is this?
+
+S: Not magic, simple file reloading.
+
+When you edit and save a cljs file:
+S: Figwheel
+S2: compiles the file
+S3: sends a message to the client (over websocket)
+S4: client reloads the compiled CLJS
+
+S: Nothing really fancy going on here.
+
+S: Is this a bad idea?
+S: Nah. Its a trade off.
+
+
+S: You get live coding in exchange, for understanding
+how your code behaviors when its loaded code over and over again.
+
+You are responsible for the magic.
+You have to write reloadable code for this to work.
+
+Reloadable in the sense that
+A: the reload only causes side effects that you are expecting
+B: that the code you change is incorporated into the running app
+such that you can see the new behavior
+
+S: If you have this at the bottom of your file:
+
+(defn handle-keypress [e] ...)
+
+(.addEventListener ... )
+
+Its not going to behave very well.
+
+
+Traditionally, with JavaScript, OOP based frameworks, and inherently stateful browser APIs
+writing reloadable code is quite a PITA.
+
+
+Enter ClojureScript and React
+
+ClojureScript
+* immutable data 
+* functional programming
+
+React
+* beautiful declarative interface to mutable client apis
+
+So we have crossed a threshold where 
+writing reloadable code has become somewhat effortless
+and as such a reccomended practice as well.
+
+It's a bit like the reccomendations to mitigate climate change.
+
+None of the suggestions for writing reloadable code are bad ideas,
+quite the opposite they are good things for your code base in general.
+
+
+**********
+
+Features Demo
+
+on the slide code base
+reload hook
+
+heads up display
+
+warnings
+doesn't load code with warnings
+
+errors
+linking to the file
+* mention that the heads up display is super light weight
+brings in 0 dependencies, one morphing div appended to the body
+
+responds well to the addition of new namespaces
+doesn't load namespaces that aren't required
+
+editing macros
+add red border to slides
+dependencies are loaded
+
+NOTE can use
+localtunnel or
+ngrok to host 
+
+
+REPL
+
+since figwheel is connecting the compiler to the client its in
+a perfect position to integrate a REPL
+
+important to remember that Figwheel was born because the initial REPL
+experience was um ... unfortunate, so thank you David.
+
+
+show basic repl functionality
+(+ 1 2 23)
+;; this is a repl into your running application
+;; this REPL experience is different in that it is aware of your
+compilation environment.
+;; so you can switch in 
+(in-ns 'slides.core)
+;; and it is already populated
+@app-state
+::TIPTRICK::
+;; another thing to remember because of live reloading
+;; if you define something in an ns that gets reloaded well its
+;; you are going to get out of sync with the Compilation env.
+;; this is going to happen a bit.
+
+build hooks that poke through the cljs repl into clojure Land
+(build-once)
+(clean-builds)
+figwheel can manage multiple builds
+
+switch to autobuild server
+switch to node repl
+
+and figwheel can talk to node
+have a node server for the slides show
+add a route
+open a tab and navigate to the route
+
+stacktraces
+
+
+TIPS TRICKS
+
+Reloadable code:
+defonce atom
+defonce addListener hook
+key handler reference
+om/root
+
+Non local reloads:
+:on-jsload
+^:figwheel-always
+om/root
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+logfile
+
+
+Tips and tricks:
+
+Reloadable code
+walk through defonces
+
+
+
+
+
+
+
+The good news is that the advent ClojureScript and now Reactjs has
+made helped made interacting the the copious stateful client
+apis tractable.
+
+
+
+
+
+
+This is a bad idea.
+On paper.
+
+
+
+
+"Literally" reloading whole files of javascript code into the browser
+doesn't sound like a great idea.
+
+And yes if you are prone to authoring files that aren't idempotent
+with respect to loading this would be a disaster.
+
+But things have changed:
+Clojurescript
+ * (persistent data structures)
+ * emphasis on functional programming
+ * relationship between state and behavior is more declarative
+ * you can reload pure functions all day long
+
+But this by itself is not enough, dealling with the stateful browser
+apis would make writing reloadable code very costly. 
+
+Enter Reactjs
+ * allows for a declarative approach to interact with the DOM.
+
+This changed everything and made the cost of writing reloadable code trivial.
+#This new interface to the DOM and general component interface with
+#lifecycle hooks make as a huge difference. 
+
+ClojureScript + React
+Very reloadable
+
+The combination of idomatic clojure and Reactjs puts ClojureScript
+developers at a significant advantage today.
+
+No longer a bad idea, its a trade off.
+
+For the cost of writing reloadable code you get in return:
+instananeous FEEDBACK
+
+Its important to note that this isn't the feedback of hot loading a
+couple of function definitions at a time. This is much much faster.
+
+
+
+
+DEMO:
+
+heads up compile error and warnings
+top level as repl behavior
+demo debugging
+
+
+repl behavior
+
+
+
+
+
+FEATURE WALKTHROUGH:
+
+
+
+Setup:
+
+
+
+Coding tricks:
+
+function references
+Commented top level as repl
+
+
+
+
+
+
+REPL is great for symbolic textual feedback.
+
+which is exteremly valuable when you are
+developing graphical interactive applications
+
+When your files are idempotent with respect to load you are minimizing
+all kinds of bull crap. In a lot of ways you are writing better code.
+
+
+
+
+
+
+
+
+
+
+
+What is Figwheel?
+
+Its software that supports a live code reloading workflow for ClojureScript.
+Its most common entry point is a leiningen plugin.
+i.e. lein figwheel example
+
+What happens when you run lein figwheel?
+
+It starts a websocket server to enable communication with a client
+application commonly running in a browser.
+
+It initially compiles the specified build. (or an implicit default)
+
+When you save a file:
+
+The file watcher picks up the change, compiles the file(s) and then
+sends the name of the "relevant" files that have changed to the
+client. The client then reloads these files.
+
+
+Simple right?
+
+
+
+
+Not magic just code reloading. Really there is no magic.  If you write
+your code in a way such that loading it causes destructive side
+effects thats what you will get.
+
+<slide with a bund of set!s>
+
+This is a bad idea.
+
+Nah.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   1. Example: the old way
+      an stateful example (3 forms) painful to work on 3rd form
+   2. what is the problem here?   
+   1. Feedback is a general programming problem, it is paramount
+   2. ClojureScript REPL was very broken (3 hours setting up a REPL
+      that didn't last very long
+   3. ClojureScript for web Dev is very focussed on producing
+      visual artifacts and graphical interactive behavior
+      a. so quick visual feedback beyond the REPL is very
+         important
+   4. 
+C. 
