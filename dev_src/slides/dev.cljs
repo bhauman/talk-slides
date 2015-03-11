@@ -9,3 +9,5 @@
                         (swap! slides.core/app-state
                                update-in
                                [:__fig-counter] inc))})
+
+

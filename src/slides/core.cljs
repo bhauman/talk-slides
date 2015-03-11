@@ -3,8 +3,7 @@
      [om.core :as om :include-macros true]
      [om.dom :as dom :include-macros true]
      [ankha.core :as ankha]
-     [sablono.core :as sab :include-macros true]
-     [slides.todos :refer [todos-component]])
+     [sablono.core :as sab :include-macros true])
     (:require-macros
      [slides.core :refer [defslide]]))
 
@@ -28,7 +27,14 @@
                  :trade-off
                  :the-trade-off
                  :reloadable-code
-                 :todos])
+                 :wont-work
+                 :expected-side-effects
+                 :incorporated-behavior
+                 :even-better
+                 :traditional
+                 :enter-clojurescript-react
+                 :bonuses
+                 :threshold])
 
 (defonce app-state
   (atom { :counter 0
@@ -174,7 +180,7 @@
 
 (defslide trade-off [state]
   [:div.center.top-20
-   [:blockquote "It's a trade off."]])
+   [:blockquote "It's a trade-off."]])
 
 (defslide the-trade-off [state]
   [:div.center.top-10
@@ -198,10 +204,119 @@
          [:span.orange "incorporates code changes"]
          " into the running app's behavior"])]])
 
+(defn highlight [data owner]
+  (reify
+    om/IDidMount
+    (did-mount [this]
+      (let [dom-node (om/get-node owner "code-ref")]
+        (.log js/console dom-node)
+        (.highlightBlock js/hljs dom-node)))
+    om/IDidUpdate
+    (did-update [this _ _]
+      (let [dom-node (om/get-node owner "code-ref")]
+        (.highlightBlock js/hljs dom-node)))
+    om/IRenderState
+    (render-state [this state]
+      (sab/html
+       [:pre.left
+        [:code {:className "clojure"
+                :ref "code-ref"}
+         (:code data)]
+        ]))))
 
+(defn highlighter [code]
+  (om/build highlight { :code code} ))
 
+(defslide wont-work [state]
+  [:div.center.top-10
+   [:blockquote "Not reloadable:"]
+   (highlighter
+    "(ns example.core)
 
-(defslide todos [state]
+...
+
+(defn keyhandler [e] ...)
+
+(.addEventlistener js/document keyhandler)")])
+
+(defslide expected-side-effects [state]
+  [:div.center.top-10
+   [:blockquote "Expected side effects"]
+   (highlighter
+    "(ns example.core)
+
+...
+
+(defn keyhandler [e] ...)
+
+(defonce listener 
+  (do (.addEventlistener js/document keyhandler)
+      true)) ")])
+
+(defslide incorporated-behavior [state]
+  [:div.center.top-10
+   [:blockquote "Incorporate new behavior"]
+   (highlighter
+    "(ns example.core)
+
+...
+
+(defn keyhandler [e] ...)
+
+(defonce listener 
+  (do (.addEventlistener js/document #(keyhandler %))
+      true))")])
+
+(defslide even-better [state]
+  [:div.center.top-10
+   [:blockquote "Even better"]
+   (highlighter
+    "(ns example.core)
+
+...
+
+(defn keyhandler [e] ...)
+
+(defn ^:export main [] 
+  (.addEventlistener js/document #(keyhandler %)))")])
+
+(defslide traditional [state]
+  [:div.center.top-10
+   [:blockquote "\"Traditional\" JavaScript patterns and APIS"]
+   [:div "make it fairly complex to write reloadable code"]])
+
+(defslide enter-clojurescript-react [state]
+  [:div.center.top-10
+   [:blockquote "Enter ClojureScript and React"]
+   ;; images for clojure and react
+   ])
+
+(defslide bonuses [state]
+  [:div.top-5.left-20.left
+   [:h2 "ClojureScript"]
+   (on 1 state
+       [:div "functional programming"])
+   (on 2 state
+       [:div "immutable data"])
+   (on 3 state
+       [:div "minimization of mutable objects"])
+   
+   (on 4 state
+       [:h2 "React"])
+   (on 5 state
+       [:div
+        "declarative interface to mutable client apis"])])
+
+(defslide threshold [state]
+  [:div.top-5.center
+   [:blockquote
+    "We have crossed a threshold."]
+   [:div
+    "Where writing reloadable code has gotten much simpler."]
+   [:div "and thus the cost benefit of writing reloadable has gone up tremendously."]])
+
+;; REMOVE this
+#_(defslide todos [state]
   (om/build todos-component (:todos-state state)))
 
 (defn get-slide [data]
@@ -259,14 +374,6 @@
               ;;; extract path here?
               (om/root-cursor app-state))))
 
-(defonce keypresser
-  (do
-    (.addEventListener
-     (.-body js/document)
-     "keyup"
-     (fn [e] (key-handler e)))
-    true))
-
 (defn inspect-data [data]
   (sab/html
    [:div.ankha {:style {:marginTop "50px"
@@ -291,15 +398,20 @@
 
 #_(swap! app-state update-in [:animate] not)
 
-(defonce app
+(defn ^:export main []
+
+  (.addEventListener
+   (.-body js/document)
+   "keyup"
+   (fn [e] (key-handler e)))
+  
   (om/root
    (fn [data owner]
      (reify om/IRender
        (render [_]
          (sab/html
-          [:div.bg-color {:onKeyPress key-handler }
+          [:div.bg-color 
            (slider data)
            #_(inspect-data data)]))))
    app-state
    {:target (. js/document (getElementById "app"))}))
-
