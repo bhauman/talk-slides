@@ -40,9 +40,7 @@
 (defonce app-state
   (atom { :counter 0
           :ins-counter 0
-          :animate true
-          :todos-state { :todos []
-                         :form-todo {} }}))
+          :animate true}))
 
 ;; slide definitions
 

@@ -12,4 +12,7 @@ pom.xml
 .repl
 .nrepl-port
 
+\#*
+\.\#*
+
 *init.clj
