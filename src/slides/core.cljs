@@ -3,9 +3,10 @@
      [om.core :as om :include-macros true]
      [om.dom :as dom :include-macros true]
      [ankha.core :as ankha]
-     [sablono.core :as sab :include-macros true])
+     [sablono.core :as sab :include-macros true]
+     [slides.present :refer [on only section slide]])
     (:require-macros
-     [slides.core :refer [defslide]]))
+     [slides.present :refer [defslide]]))
 
 (enable-console-print!)
 
@@ -42,34 +43,6 @@
           :animate true
           :todos-state { :todos []
                          :form-todo {} }}))
-
-(defmulti slide (fn [a] a))
-
-(defn section [nm state content]
-  (sab/html
-   [:section
-    {:style {:display "block"} :key nm
-     :className
-     (str
-      "dbg-border bg-color "
-      (if (:last-slide state)
-        (str "last"
-             (when (:animate state)
-               " last-animate"))
-        (str "current"
-             (when (:animate state)
-               " current-animate"))))}
-    content]))
-
-(defn on [num state content]
-  (if (>= (:ins-counter state) num)
-    content
-    [:span]))
-
-(defn only [num state content]
-  (if (= (:ins-counter state) num)
-    content
-    [:span]))
 
 ;; slide definitions
 
@@ -119,10 +92,6 @@
    [:blockquote "This experience is "
     [:span.orange "NOT"] " awesome."]
    [:div.blue "- wtf"]])
-
-#_(defslide not-awesome [state]
-  [:div.center.top-20
-   [:blockquote "State isn't persisting."]])
 
 (defslide bret-victor-1 [state]
   [:div.center.top-20
@@ -312,8 +281,7 @@
    [:blockquote
     "We have crossed a threshold."]
    [:div
-    "Where writing reloadable code has gotten much simpler."]
-   [:div "and thus the cost benefit of writing reloadable has gone up tremendously."]])
+    "Where writing reloadable code has gotten much simpler."]])
 
 ;; REMOVE this
 #_(defslide todos [state]
@@ -404,7 +372,7 @@
    (.-body js/document)
    "keyup"
    (fn [e] (key-handler e)))
-  
+
   (om/root
    (fn [data owner]
      (reify om/IRender
@@ -414,4 +382,7 @@
            (slider data)
            #_(inspect-data data)]))))
    app-state
-   {:target (. js/document (getElementById "app"))}))
+   {:target (. js/document (getElementById "app"))})
+  
+)
+
