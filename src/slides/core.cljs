@@ -11,7 +11,7 @@
 
 (enable-console-print!)
 
-(declare get-slide)
+(declare get-slide dispatch!)
 
 ;; define your app data so that it doesn't get over-written on reload
 
@@ -122,9 +122,6 @@
        [:div.line "Acheive a state of "
         [:span.blue "FLOW"]])])
 
-
-;; 
-
 (defslide dome [state]
   [:div.center.top-5 
    [:img {:src "img/dome.jpgg" ;; imgs/dome.jpg
@@ -164,6 +161,9 @@
     [:span.orange "NOT"] " awesome."]
    [:div.blue "- wtf"]])
 
+
+#_(dispatch! :advance)
+
 ;; what experience do we want? What would be a dreamy experience?
 
 ;; what trade-offs are we going to have to make in order to get that
@@ -184,7 +184,9 @@
     "A tool addresses human needs by "
     [:span #_.orange "amplifying"]
     " human capabilities."]
-   [:div.blue "- Burt Reynolds"]])
+   [:div #_.blue "- Burt Reynolds"]])
+
+#_(dispatch! :advance)
 
 (defslide bret-victor-2 [state]
   [:div.center.top-20
@@ -413,6 +415,9 @@
                            :counter
                            (if (zero? x) 0 (dec x)))))))
 
+(defn dispatch! [action]
+  (dispatch action (om/root-cursor app-state)))
+
 (def dispatch-map
   {32 :advance
    39 :advance
@@ -422,10 +427,7 @@
 
 (defn key-handler [e]
   (when-let [action (get dispatch-map (.-keyCode e))]
-    ;; we can scope the data that goes to the dispatch
-    (dispatch action
-              ;;; extract path here?
-              (om/root-cursor app-state))))
+    (dispatch! action)))
 
 (defn inspect-data [data]
   (sab/html
@@ -471,7 +473,7 @@
 
 (fw/start {
            :websocket-url "ws://localhost:3449/figwheel-ws"
-           :autoload false
+           ;;:autoload false
            :on-jsload (fn []
                         (swap! app-state
                                update-in
