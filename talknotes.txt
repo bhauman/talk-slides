@@ -1,0 +1,396 @@
+Focus sentence: what I'm talking about
+Function sentence: what I want poeple to do
+
+
+s: We're here to talk about hot code reloading.
+
+b: behavior of the application is changed
+b: application state is unchanged
+
+the behavior of your application has changed to reflect the changes you have made to your code base.
+and that the state of your application is maintained
+
+
+Particularly in an imperative context.
+
+Right because if we were talking about a declarative context we probably wouldn't be having this conversation.
+
+Costs nothing to reload declarative code.
+
+
+
+Why are we talking about hot code reloading?
+
+s: Increasing feedback
+b: fatter pipe
+b: greater throughput
+
+I want to increase the rate and amount of information I get while I'm
+coding.
+
+My main point here is that this is important.  Greater feedback bandwidth
+gives much more information about what you are actually doing as
+opposed to what you think you are doing.
+
+
+
+
+
+Observation, it's interesting that many IDEs maximize the amount of
+info you get pre execution while you are coding.  But the divide is
+there.
+
+The Clojure REPL based workflow has been attacking this divide from
+day one. Stuart Sierra's Component.
+
+Although, the divide is breaking down this write, compile, restart
+workflow is deeply ingrained in developers to the point where we
+aren't, weren't considering the alternative.  And its taken and
+outspoken charismatic like Bret Victor to remind us what we
+really want.
+
+However if you demonstrate hot code reloading to a non programmer its
+like the least exciting thing in the world to them.  They're like
+yeah??? Isn't that how it always worked?
+
+When my non technical friends ask me what I do and I tell them that I
+am working on a library that helps people code things live in the
+browser, they look so amazingly unimpressed.
+
+But I take this natural expectation as further evidence that this is
+what we are actually wanting.
+
+
+
+
+
+
+Fun
+
+Failing extremely fast is Fun!
+Millions of video games have taught us this.
+
+Can you imaging playing pacman and by making a move left and then
+going through some process to find out the state of the game? Did a
+ghost hit you? Did you accrue another point?
+
+And improve the chances of getting into and staying in flow.
+
+The current write, save, restart the application cycle is a staccato
+programming experience that interupts this flow.
+
+We often end up writing too much code before trying it out to record
+our thoughts and maximize the period of flow, but then the flow is
+clobbered by a bunch of code that just doesn't execute, and we switch
+to bug finding mode.
+
+Having fun does affect the final product.
+
+
+
+
+
+
+
+Specifically I am talking about hot loading ClojureSrcipt into an application running in the browser.
+
+The applies to other javascript environments. Node etc.  but I'm going to concentrate on the Browser for simplicity and because it's the widest deployed JS environment that we have.
+
+What do you mean your not having fun?
+Why are we even having this conversation?
+Why hot code reloading in an imperative env?
+
+Let's look at the current State of the art:
+
+Demo
+Someone famous has be quoted saying:
+Not everything is awesome.
+
+This is experience is not awesome.
+
+This begs the question:
+What experience do we want? What would be the dream experience here?
+
+What are the trade-offs? What is going to be the cost to have this experience?
+
+
+
+Concretely for ClojureScript.  Figwheel is my answer to these questions.
+
+Figwheel: figwheel is a service that hot loads ClojureScript code into your running
+application as you change it
+
+
+Start Figwheel.
+
+What experience do I want?
+
+Instant feedback.  I want to see the behavior of my code ASAP
+
+I'd like to get like to see the behavioral results of my code changes immediately.
+Edit slides live
+I'd like to inspect the state of my code easily.
+(Prn @app-state)
+(Prn state)
+(Ankha state)
+I'd like to riff and try out new code effortlessly.  ( this can be done with the REPL as well but when I wrote Figwheel. Uh the ClojureScript REPL didn't work that well. ) I would also argue that one command ctrl-s for the activation of code is potentially simpler.
+(Defn add
+(Prn (add ))
+
+
+Now if you haven't experienced live code reloading you may not find this very exciting.
+But it is!  The immediacy is intoxicating and feels like it fulfills a natural expectation.
+
+
+What is this worth to you, as a developer? What would you be willing to trade for it?
+
+Would you switch language? Would you re-examine your coding patterns?
+
+I ask this because there is an impending trade off coming.
+
+Two ways to do hot reloading:
+1. Complex
+Write any old imperative code, and a really complex system for reloading it, that will never cover all the cases.
+
+2. Simple
+Write Reloadable code.
+Something that the Clojure community already does.  Understanding the side effects of loading your code live is something we already do.
+
+The trade off is:
+In exchange for writing Reloadable code
+You get instantaneous feedback, fun and flow.
+
+
+Reloadable code is:
+When loaded the be behavior is integrated into you running application.
+Code the when loaded only causes expected side effects.
+
+
+
+Problems of writing Reloadable code in an imperative env.
+
+Our chosen environment "the browser" is pretty darn imperative.
+
+Networks of mutable stateful objects.
+
+Module pattern.
+
+Top level side effects.
+
+Stateful mutable browser Apis DOM etc.
+
+
+Writing reloadable could cost a lot depending on how imperative your coding style is.
+
+The added complexity of understanding this new dimension of the side
+effects of you code at load time, costs more,
+cost the is especially higher on a larger team could be prohibitive.
+
+Reloadability in this env is brittle.
+
+If you are embeded in an imperative, OOP coding style, this trade off
+is probably not worth it.
+
+
+
+
+Taming the beast and
+the advent of mostly functional programming.
+
+Enter ClojureScript and it's functional idioms
+
+Pure functions are reloadable
+
+Methods that refer to stable references to program state are Reloadable.
+
+Methods that take mutable state as parameter are Reloadable.
+
+Much idiomatic clojurescript code is reloadable
+
+But we still have a problem when it comes to stateful browser Apis.
+
+I think clojurescript by itself with these browser Apis is still very costly to write Reloadable code.
+
+
+
+React is the threshold.
+
+React provides an elegant declarative  component model that is effortless to reload.  Provides a means to interface with browser Apis in a manner that is declarative and Reloadable.
+
+The effort write Reloadable code has gone from complex to well you are already doing it and you didn't even know it.
+
+Argument for another day:
+Reloadable code is better code.
+
+People in the JavaScript world should really be taking note.
+
+So now that we are here we get to enjoy a coding with instantaneous feedback.
+
+
+Why spend so much time on advocacy and so little on the specifics of
+figwheel.
+
+Well figwheel is the encoding of an advocacy. Once your code is
+written in a reloadable style the rest is easy.
+
+
+
+Demo tricks and tips!
+
+
+Figwheel setup
+
+s: Config lein
+
+s: config client
+
+s: start lein figwheel
+
+s: starts a REPL
+
+s: load browser to connect
+
+s: tail the log file
+
+
+
+
+Anatomy of a Figwheel/reloadable program
+
+s: defonce state atom
+  You may have several of these.
+  Interesting to note that state is stable and behavior is changing
+  a benefit of seperating state from behavior.
+
+s: function defenitions
+  right when a file is loaded these are simply redefined
+
+s: React render call
+  idempotent?
+
+s: figwheel/start call
+   
+
+Live coding
+
+Features:
+
+
+heads up display
+warnings
+errors
+doesn't load code with warnings
+
+broadcast 2 browsers?
+
+doesn't load code that hasn't been required
+edit tests but they don't load. force them to load with
+^:figwheel-always
+mention also ^:figwheel-no-load, ^:figwheel-force-load
+
+load hook? 
+
+responds well to the addition of namespaces
+
+
+
+
+using figwheel as repl via println 
+
+REPL
+
+since figwheel is connecting the compiler to the client its in
+a perfect position to integrate a REPL
+
+important to remember that Figwheel was born because the initial REPL
+experience was um ... unfortunate, so thank you David.
+
+
+show basic repl functionality
+(+ 1 2 23)
+;; this is a repl into your running application
+;; this REPL experience is different in that it is aware of your
+compilation environment.
+;; so you can switch in 
+(in-ns 'slides.core)
+;; and it is already populated
+@app-state
+::TIPTRICK::
+;; another thing to remember because of live reloading
+;; if you define something in an ns that gets reloaded well its
+;; you are going to get out of sync with the Compilation env.
+;; this is going to happen a bit.
+
+build hooks that poke through the cljs repl into clojure Land
+(build-once)
+(clean-builds)
+figwheel can manage multiple builds
+
+switch to autobuild server
+switch to node repl
+
+and figwheel can talk to node
+have a node server for the slides show
+add a route
+open a tab and navigate to the route
+
+stacktraces
+
+
+TIPS TRICKS
+
+
+figwheel_server.log
+
+Reloadable code:
+defonce atom
+defonce addListener hook
+key handler reference 
+om/root
+main-func in index.html
+
+Non local reloads:
+:on-jsload
+^:figwheel-always
+om/root
+
+^:figwheel-always and testing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Om/root refactor
+Local state problem
+Css animation rendering system

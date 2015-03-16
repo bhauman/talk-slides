@@ -4,7 +4,8 @@
      [om.dom :as dom :include-macros true]
      [ankha.core :as ankha]
      [sablono.core :as sab :include-macros true]
-     [slides.present :refer [on only section slide]])
+     [slides.present :refer [on only section slide]]
+     [figwheel.client :as fw])
     (:require-macros
      [slides.present :refer [defslide]]))
 
@@ -15,6 +16,11 @@
 ;; define your app data so that it doesn't get over-written on reload
 
 (def slide-list [:intro
+                 :hot-code1                 
+                 :hot-code
+                 :imperative-context
+                 :feedback
+                 :fun
                  :dome
                  :awesome
                  :not-awesome
@@ -54,14 +60,82 @@
    [:div.blue "rigsomelight.com"]
    [:div.blue "github.com/bhauman"]])
 
+;; automated constant
+
+(defslide hot-code1 [state]
+  [:div.center.top-15
+   (on 1 state
+       [:h2
+        "Automated continuous"])
+   [:h2.blue "Hot code reloading"]])
+
+(defslide hot-code [state]
+  [:div.center.top-15
+   [:h2.blue "Hot code reloading"]
+   [:div.line "loading code into a running application"]
+   [:div
+    (on 1 state
+        [:div.line
+         
+         [:span.green "behavior "] "of application has "
+         [:span.green "changed"]]
+        )
+    (on 2 state
+        [:div.line "application "
+         [:span.orange "state"]
+         " is "
+         [:span.orange "unchanged"]]
+        )
+    (on 3 state
+        [:div.line
+         [:span.blue "avoiding" ]
+         " restarts"])]
+   
+   ])
+
+(defslide imperative-context [state]
+  [:div.center.top-15
+   [:h2.blue "Hot code reloading"]
+   [:div.line
+    "Tricky in an imperative context"]])
+
+(defslide feedback [state]
+  [:div.center.top-15
+   [:h2.green "Increasing Feedback"]
+   (on 1 state
+       [:div
+        [:div.line
+         "Increase the amount of information"]
+        [:div.line
+         "we receive while coding"]])
+   (on 2 state
+       [:div.line.orange "Important priority" ])])
+
+(defslide fun [state]
+  [:div.center.top-15
+   [:h2.green "Fun :)"]
+   (on 1 state
+       [:div.line "Failing fast is fun!"])
+   (on 2 state
+       [:div.line.orange "Video games agree!" ])
+   (on 3 state
+       [:div.line "Acheive a state of "
+        [:span.blue "FLOW"]])]
+  )
+
+
+;; 
+
 (defslide dome [state]
   [:div.center.top-5 
-   [:img {:src "imgs/dome.jpg"}]
+   [:img {:src "imgs/dome.jpg" ;; imgs/dome.jpg
+          :width 720
+          :height 537}] 
    (only 1 state
          [:div {:style {:fontSize "8em;"
                         :position "absolute"
-                        :top "190px"
-                        :left "288px"
+                        :top "190px"   ;; 190
+                        :left "288px"  ;; 288
                         :textShadow "0px 0px 20px #000"}}
           "(" [:span {:style
                       {:display "inline-block"
@@ -394,7 +468,12 @@
            (slider data)
            #_(inspect-data data)]))))
    app-state
-   {:target (. js/document (getElementById "app"))})
-  
-)
+   {:target (. js/document (getElementById "app"))}))
 
+(fw/start {
+           :websocket-url "ws://localhost:3449/figwheel-ws"
+           :autoload false
+           :on-jsload (fn []
+                        (swap! app-state
+                               update-in
+                               [:__fig-counter] inc))})

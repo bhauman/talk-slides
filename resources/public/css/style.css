@@ -22,6 +22,10 @@ html {
     padding: 0px;
 }
 
+.line {
+  line-height: 1.5em;
+}
+
 .center {
     text-align:center;
 }

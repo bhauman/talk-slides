@@ -6,14 +6,14 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2850"]
-                 [figwheel "0.2.5-SNAPSHOT"]
+                 [figwheel "0.2.5"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [sablono "0.3.4"]
                  [ankha "0.1.4"]                 
                  [org.omcljs/om "0.8.8"]]
 
   :plugins [[lein-cljsbuild "1.0.4"]
-            [lein-figwheel "0.2.5-SNAPSHOT"]]
+            [lein-figwheel "0.2.5"]]
 
   :source-paths ["src"]
 
@@ -21,11 +21,11 @@
   
   :cljsbuild {
     :builds [{:id "dev"
-              :source-paths ["src" "dev_src"]
+              :source-paths ["src" #_"dev_src"]
               :compiler {:output-to "resources/public/js/compiled/slides.js"
                          :output-dir "resources/public/js/compiled/out"
                          :optimizations :none
-                         :main slides.dev
+                         :main slides.core
                          :asset-path "js/compiled/out"
                          :source-map true
                          :source-map-timestamp true
