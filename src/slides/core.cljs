@@ -70,13 +70,13 @@
    [:h2.blue "Hot code reloading"]])
 
 (defslide hot-code [state]
-  [:div.center.top-15
+  [:div.center.top-5
    [:h2.blue "Hot code reloading"]
    [:div.line "loading code into a running application"]
-   [:div
+   [:div.line "such that"]
+   [:div.top-5
     (on 1 state
         [:div.line
-         
          [:span.green "behavior "] "of application has "
          [:span.green "changed"]]
         )
@@ -89,15 +89,15 @@
     (on 3 state
         [:div.line
          [:span.blue "avoiding" ]
-         " restarts"])]
-   
-   ])
+         " restarts"])]])
 
 (defslide imperative-context [state]
-  [:div.center.top-15
-   [:h2.blue "Hot code reloading"]
-   [:div.line
-    "Tricky in an imperative context"]])
+  [:div.center.top-5
+   [:h2.orange "Hot code reloading"]
+   [:div  	"\u2229"]
+   [:h2.blue "imperative context"]
+   [:div  	"="]
+   [:h2.line "¯\\_(ツ)_/¯"]])
 
 (defslide feedback [state]
   [:div.center.top-15
@@ -120,22 +120,21 @@
        [:div.line.orange "Video games agree!" ])
    (on 3 state
        [:div.line "Acheive a state of "
-        [:span.blue "FLOW"]])]
-  )
+        [:span.blue "FLOW"]])])
 
 
 ;; 
 
 (defslide dome [state]
   [:div.center.top-5 
-   [:img {:src "imgs/dome.jpg" ;; imgs/dome.jpg
+   [:img {:src "img/dome.jpgg" ;; imgs/dome.jpg
           :width 720
           :height 537}] 
    (only 1 state
          [:div {:style {:fontSize "8em;"
                         :position "absolute"
-                        :top "190px"   ;; 190
-                        :left "288px"  ;; 288
+                        :top "140px"   ;; 190
+                        :left "248px"  ;; 288
                         :textShadow "0px 0px 20px #000"}}
           "(" [:span {:style
                       {:display "inline-block"
@@ -143,21 +142,21 @@
    (only 2 state
          [:div
           {:style {:position "absolute"
-                   :top "213px"
-                   :left "366px"
+                   :top "253px"  ;; 213
+                   :left "446px" ;; 366
                    :opacity 0.5}}
           [:img  {:src "imgs/Clojure-Logo.png"
                   :width "210px"}]])])
 
 (defslide awesome [state]
   [:div.center.top-5
-   [:img {:src "img/rich.jpegg"
+   [:img {:src "imgs/rich.jpeg"
           :style { :borderRadius "50%"
                    :boxShadow "0px 0px 10px #000"}
           :width "300"
           :height "300"}]
    [:blockquote "Not everything is awesome."]
-   [:div.blue "- Burt Reynolds"]])
+   [:div.blue "- Rich Hickey"]])
 
 (defslide not-awesome [state]
   [:div.center.top-20

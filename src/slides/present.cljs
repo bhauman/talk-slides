@@ -10,7 +10,7 @@
     {:style {:display "block"} :key nm
      :className
      (str
-      "dbg-borderr bg-color "
+      "dbg-border bg-color "
       (if (:last-slide state)
         (str "last"
              (when (:animate state)
