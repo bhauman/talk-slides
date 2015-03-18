@@ -108,17 +108,15 @@
         [:div.line
          "Increase the amount of information"]
         [:div.line
-         "we receive while coding"]])
-   (on 2 state
-       [:div.line.orange "Important priority" ])])
+         "we receive while coding"]])])
 
 (defslide fun [state]
   [:div.center.top-15
-   [:h2.green "Fun :)"]
+   [:h2.green "More fun!"]
    (on 1 state
-       [:div.line "Failing fast is fun!"])
+       [:div.line "Failing fast is fun"])
    (on 2 state
-       [:div.line.orange "Video games agree!" ])
+       [:div.line.orange "Video games agree" ])
    (on 3 state
        [:div.line "Acheive a state of "
         [:span.blue "FLOW"]])])
@@ -513,7 +511,7 @@
 
 (fw/start {
            :websocket-url "ws://localhost:3449/figwheel-ws"
-           :autoload false
+           ;; :autoload false
            :on-jsload (fn []
                         (swap! app-state
                                update-in
