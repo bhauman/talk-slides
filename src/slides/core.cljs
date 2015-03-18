@@ -22,8 +22,9 @@
                  :feedback
                  :fun
                  :dome
-                 :awesome
+                 #_:awesome
                  :not-awesome
+                 :what-experience
                  :bret-victor-1
                  :bret-victor-2
                  :magic
@@ -122,6 +123,29 @@
        [:div.line "Acheive a state of "
         [:span.blue "FLOW"]])])
 
+#_(defslide dome [state]
+  [:div.center.top-5 
+   [:img {:src "img/dome.jpgg" ;; imgs/dome.jpg
+          :width 720
+          :height 537}] 
+   (only 1 state
+         [:div {:style {:fontSize "8em;"
+                        :position "absolute"
+                        :top "140px"   ;; 190
+                        :left "248px"  ;; 288
+                        :textShadow "0px 0px 20px #000"}}
+          "(" [:span {:style
+                      {:display "inline-block"
+                       :width "200px"}}] ")"])
+   (only 2 state
+         [:div
+          {:style {:position "absolute"
+                   :top "253px"  ;; 213
+                   :left "446px" ;; 366
+                   :opacity 0.5}}
+          [:img  {:src "imgs/Clojure-Logo.png"
+                  :width "210px"}]])])
+
 (defslide dome [state]
   [:div.center.top-5 
    [:img {:src "img/dome.jpgg" ;; imgs/dome.jpg
@@ -161,6 +185,15 @@
     [:span.orange "NOT"] " awesome."]
    [:div.blue "- wtf"]])
 
+(defslide what-experience [state]
+  [:div.center.top-20
+   [:blockquote "What experience do we want?"]])
+
+
+
+;; stage 1
+
+#_(prn @app-state)
 
 #_(dispatch! :advance)
 
@@ -179,23 +212,30 @@
 ;; maybe instead of the examples below.
 
 (defslide bret-victor-1 [state]
+  #_(prn state)
   [:div.center.top-20
    [:blockquote
-    "A tool addresses human needs by "
+    "A mustache addresses human needs by "
     [:span #_.orange "amplifying"]
     " human capabilities."]
-   [:div #_.blue "- Burt Reynolds"]])
+   [:div.blue "- Burt Reynolds"]])
 
 #_(dispatch! :advance)
 
 (defslide bret-victor-2 [state]
   [:div.center.top-20
-   [:blockquote  "a tool converts what we"
+   [:blockquote  "a beard converts what we"
     [:span #_.orange " can do"]
     [:br]
     "into what we"
     [:span #_.green " want to do"]]
-   [:div.blue "- Burt Reynolds"]])
+   [:div.blue "- Zach Galifianakis"]
+   #_[:div.left-20.left
+      (om/build ankha/inspector state)]])
+
+#_(defn add [a b] (+ a b))
+#_(prn (add 3 4))
+
 
 (defslide magic [state]
   [:div.center.top-20
@@ -473,7 +513,7 @@
 
 (fw/start {
            :websocket-url "ws://localhost:3449/figwheel-ws"
-           ;;:autoload false
+           :autoload false
            :on-jsload (fn []
                         (swap! app-state
                                update-in
