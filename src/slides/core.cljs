@@ -27,22 +27,21 @@
                  :what-experience
                  :bret-victor-1
                  :bret-victor-2
-                 :magic
-                 :not-magic
-                 :what-happens
-                 :nothing-fancy
-                 :bad-idea
-                 :trade-off
+                 :this-awesome
+                 :impending-trade-off
+                 :reloading-two-ways
+                 
                  :the-trade-off
                  :reloadable-code
-                 :wont-work
-                 :expected-side-effects
-                 :incorporated-behavior
-                 :even-better
-                 :traditional
-                 :enter-clojurescript-react
-                 :bonuses
-                 :threshold])
+                 :how-hard-write
+                 :problems-imperative
+                 :cost-benefit
+                 :taming-the-beast
+                 :clojurescript
+                 :api-problem
+                 :enter-react
+                 :react
+                 ])
 
 (defonce app-state
   (atom { :counter 0
@@ -234,50 +233,44 @@
 #_(defn add [a b] (+ a b))
 #_(prn (add 3 4))
 
-
-(defslide magic [state]
+(defslide this-awesome [state]
   [:div.center.top-20
-   [:blockquote "What "
-    [:span.orange "Magic"] " is this?"]])
+   [:blockquote  "This experience is "
+    [:span.orange " Far Out!"]]])
 
-(defslide not-magic [state]
+(defslide this-awesome [state]
   [:div.center.top-20
-   [:blockquote "Not Magic "]
-   [:div.blue "Just simple file reloading"]])
-
-(defslide what-happens [state]
-  [:div.center.top-15
-   [:h2 "When you edit and save a file "
-    [:span.orange "Figwheel"] ":"]
-   [:div.left-20.left
-    (on 1 state
-        [:div [:span.green "compiles"]
-         " the file"])
-    (on 2 state
-        [:div [:span.green "sends"]
-         " a message to the client"])
-    (on 3 state
-        [:div "client then "
-         [:span.blue "reloads"]
-         " the compiled CLJS"])]])
-
-(defslide nothing-fancy [state]
-  [:div.center.top-10
-   [:img {:src "imgs/super-fancy-boom1.gif"}]
-   [:blockquote.orange "Nothing fancy is going on here."]])
-
-(defslide bad-idea [state]
-  [:div.center.top-20
-   [:blockquote "Is this a Bad Idea?"]
+   [:blockquote  "What is this worth to you?"]
    (on 1 state
-       [:div "Nah."])])
+       [:div.line "Would you switch languages?"])
+   (on 2 state
+       [:div.line "Would you switch frameworks?"])
+   (on 3 state
+       [:div.line "Would you change your coding patterns?"])])
 
-(defslide trade-off [state]
+(defslide impending-trade-off [state]
   [:div.center.top-20
-   [:blockquote "It's a trade-off."]])
+   [:blockquote  "A trade-off is coming"]])
+
+;; how do I accomplish this reloading?
+
+(defslide reloading-two-ways [state]
+  [:div.left.left-10.top-5
+   [:h1
+    "Two ways to do hot reloading:"]
+   (on 1 state
+       [:div
+        [:h3.orange "Complex " (on 2 state
+                                   "/ Impossible")]
+        [:div.line "Accomodate arbitrary imperative code"]])
+   (on 3 state
+       [:div
+        [:h3.green "Simple"]
+         [:div.line "Write reloadable code"]])])
 
 (defslide the-trade-off [state]
   [:div.center.top-10
+   [:div.blue "The trade-off"]
    [:blockquote "You get: "
     [:span.green "instantaneous feedback"]]
    [:div.blue "in exchange for"]
@@ -290,13 +283,79 @@
     " is code that"]
    [:div "on reload"]
    [:br]
-   [:div #_.left-20.left
-    (on 1 state
-        [:div "only causes " [:span.orange "expected side effects"] ])
-    (on 2 state
-        [:div
-         [:span.orange "incorporates code changes"]
-         " into the running app's behavior"])]])
+   (on 1 state
+       [:div.line
+        [:span.green "behavior "] "of application has "
+        [:span.green "changed"]])
+   (on 2 state
+       [:div.line "application "
+        [:span.orange "state"]
+        " is "
+        [:span.orange "unchanged"]])])
+
+(defslide how-hard-write [state]
+  [:div.center.top-10
+   [:blockquote "How hard is it to write reloadable code?"]])
+
+;; moving the responsibility to the developers shoulders
+;; and I'm saying that in an imperative context thats the
+;; only place it can reside.
+
+(defslide problems-imperative [state]
+  [:div.left.left-10.top-5
+   [:h3 "Problems of writing reloadable code " [:br]
+    " in an imperative environment."]
+   (on 1 state
+       [:div.line "Networks of mutable objects"])
+   (on 2 state
+       [:div.line "Module pattern"])
+   (on 3 state
+       [:div.line "Top level side effects"])
+   (on 4 state
+       [:div.line "Stateful mutable browser APIs (DOM, etc)"])
+   (on 5 state
+       [:div.line "Design of dominent frameworks"])])
+
+(defslide cost-benefit [state]
+  [:div.center.top-10
+   [:h3.line "Potentially very High Cost"]])
+
+(defslide taming-the-beast [state]
+  [:div.center.top-10
+   [:blockquote "Taming the beast"]
+   [:h3.line "with mostly functional programming"]])
+
+(defslide clojurescript [state]
+  [:div.center.top-10
+   [:blockquote "ClojureScript idioms are reloadable"]
+   (on 1 state
+       [:div.line "Pure functions"])
+   (on 2 state
+       [:div.line "Methods that refer to stable mutable state references"])
+   (on 3 state
+       [:div.line "Methods that take mutable state as a parameter"])
+   (on 4 state
+       [:div.line "Most idiomatic ClojureScript is reloadable"])])
+
+(defslide api-problem [state]
+  [:div.center.top-10
+   [:blockquote "Browser APIs are still a problem."]])
+
+(defslide enter-react [state]
+  [:div.center.top-10
+   [:blockquote "React"]
+   (on 1 state
+       "React is a reloadbale interface to the DOM.")])
+
+(defslide react [state]
+  [:div.center.top-10
+   [:h3 "A threshold has been crossed."]
+   [:div.line "ClojureScript and React"]
+   [:div.line  "together"]
+   [:div.line " have made writing reloadable code"]
+   [:div.line " significantly easier."]])
+
+
 
 (defn highlight [data owner]
   (reify

@@ -160,10 +160,10 @@ The trade off is:
 In exchange for writing Reloadable code
 You get instantaneous feedback, fun and flow.
 
-
 Reloadable code is:
-When loaded the be behavior is integrated into you running application.
-Code the when loaded only causes expected side effects.
+b: behavior of the application is changed
+b: application state is unchanged
+
 
 
 
