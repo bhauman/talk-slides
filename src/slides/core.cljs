@@ -28,6 +28,7 @@
                  :bret-victor-1
                  :bret-victor-2
                  :this-awesome
+                 :what-worth
                  :impending-trade-off
                  :reloading-two-ways
                  
@@ -238,7 +239,7 @@
    [:blockquote  "This experience is "
     [:span.orange " Far Out!"]]])
 
-(defslide this-awesome [state]
+(defslide what-worth [state]
   [:div.center.top-20
    [:blockquote  "What is this worth to you?"]
    (on 1 state
