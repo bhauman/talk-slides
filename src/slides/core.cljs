@@ -42,6 +42,8 @@
                  :api-problem
                  :enter-react
                  :react
+                 :sample-program
+                 :the-how
                  ])
 
 (defonce app-state
@@ -356,8 +358,6 @@
    [:div.line " have made writing reloadable code"]
    [:div.line " significantly easier."]])
 
-
-
 (defn highlight [data owner]
   (reify
     om/IDidMount
@@ -375,11 +375,42 @@
        [:pre.left
         [:code {:className "clojure"
                 :ref "code-ref"}
-         (:code data)]
+         data]
         ]))))
 
 (defn highlighter [code]
-  (om/build highlight { :code code} ))
+  (om/build highlight code))
+
+(defslide sample-program [state]
+  [:div
+   (highlighter
+    "(ns example.core
+  (:require 
+    [sablono.core :as sab :include-macros true]
+    [om.core :as om :include-macros true]))
+
+(defonce app-state (atom 0))
+
+(defn counter [state]
+  (sab/html 
+    [:div 
+      [:h1 \"Count \" (:count state)]
+      [:a {:onClick #(swap! @app-state inc) \"inc\"]]]))
+
+(om/root 
+  (fn [data owner]
+     (reify om/IRender
+       (render [_] (counter data))))
+  app-state
+  {:target (. js/document (getElementById \"app\"))})")])
+
+
+
+(defslide the-how [state]
+  [:div.center.top-10
+   [:blockquote "Figwheel how?"]])
+
+
 
 (defslide wont-work [state]
   [:div.center.top-10

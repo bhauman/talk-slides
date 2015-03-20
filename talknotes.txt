@@ -238,6 +238,7 @@ written in a reloadable style the rest is easy.
 Demo tricks and tips!
 
 
+
 Figwheel setup
 
 s: Config lein
@@ -251,6 +252,7 @@ s: starts a REPL
 s: load browser to connect
 
 s: tail the log file
+
 
 
 
@@ -270,6 +272,7 @@ s: React render call
 
 s: figwheel/start call
    
+
 
 Live coding
 
