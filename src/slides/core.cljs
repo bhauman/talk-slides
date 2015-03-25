@@ -13,38 +13,87 @@
 
 (declare get-slide dispatch!)
 
+(defn highlight [data owner]
+  (reify
+    om/IDidMount
+    (did-mount [this]
+      (let [dom-node (om/get-node owner "code-ref")]
+        (.log js/console dom-node)
+        (.highlightBlock js/hljs dom-node)))
+    om/IDidUpdate
+    (did-update [this _ _]
+      (let [dom-node (om/get-node owner "code-ref")]
+        (.highlightBlock js/hljs dom-node)))
+    om/IRenderState
+    (render-state [this state]
+      (sab/html
+       [:pre.left
+        [:code {:className "clojure"
+                :ref "code-ref"}
+         data]]))))
+
+(defn highlighter [code]
+  (om/build highlight code))
+
 ;; define your app data so that it doesn't get over-written on reload
 
 (def slide-list [:intro
-                 :hot-code1                 
-                 :hot-code
-                 :imperative-context
-                 :feedback
-                 :fun
-                 :dome
-                 #_:awesome
-                 :not-awesome
+                 :context
+
+                 :figwheel-birth
+                 :state-of-the-art
+                 :staccato
                  :what-experience
+                 :experiment
+                 :bad-idea?
+                 :the-trade-off
+                 :reloadable-code
+                 :shiftin-responsibility
+                 :how-hard-write
+                 :clojure-script-reloadable
+                 :javascript-not-so-much
+                 :enter-reactjs
+                 :clojurescript-heart-reactjs
+                 :reloadable-javascript
+                 :dome
                  :bret-victor-1
                  :bret-victor-2
                  :this-awesome
-                 :what-worth
-                 :impending-trade-off
-                 :reloading-two-ways
-                 
-                 :the-trade-off
-                 :reloadable-code
-                 :how-hard-write
-                 :problems-imperative
-                 :cost-benefit
-                 :taming-the-beast
-                 :clojurescript
-                 :api-problem
-                 :enter-react
-                 :react
-                 :sample-program
-                 :the-how
-                 ])
+                 :timely-feedback
+                 :qualities
+
+                 :questions])
+
+
+(comment
+  :hot-code1                 
+  :hot-code
+  :imperative-context
+  :feedback
+  :fun
+  :dome
+  #_:awesome
+  :not-awesome
+  :what-experience
+  :this-awesome
+  :what-worth
+  :impending-trade-off
+  :reloading-two-ways
+  
+  :the-trade-off
+  :reloadable-code
+  :how-hard-write
+  :problems-imperative
+  :cost-benefit
+  :taming-the-beast
+  :clojurescript
+  :api-problem
+  :enter-react
+  :react
+  :sample-program
+  :better-code
+  :the-how)
+
 
 (defonce app-state
   (atom { :counter 0
@@ -64,6 +113,241 @@
    [:div.blue "github.com/bhauman"]])
 
 ;; automated constant
+
+(defslide context [state]
+  [:div.center.top-15
+   [:h2.green "Context"]
+   [:div.line "ClojureScript"]
+   [:div.line "SPAs"]])
+
+(defslide figwheel-birth [state]
+  [:div.center.top-15
+   [:h2.green "Birth of Figwheel"]
+   [:div "dissatisfied with the current feedback loop " [:br]
+    "of SPA development"]])
+
+(defslide state-of-the-art [state]
+  [:div.left.left-10.top-5
+   [:h2.blue "Current state of the art"]
+   (on 1 state [:div.line "Write code"])
+   (on 2 state [:div.line "Reload browser"])
+   (on 3 state [:div.line "Lose application state"])
+   (on 4 state [:div.line "Manipulate application back into state needed"])
+   (on 5 state [:div.line "Test/verify behavior"])
+   (on 6 state [:div.line "Rinse and repeat, until you lose your mind"])])
+
+(defslide staccato [state]
+  [:div.center.top-20
+   [:blockquote.blue "staccato " [:span.orange "antithesis" ] " of " [:span.green "FLOW"]]])
+
+(defslide experiment [state]
+  [:div.center.top-15
+   [:div.blue "Experiment"]
+   [:blockquote.orange "simple live file reloads"]
+   [:div.line
+    "why not reload the code into the"]
+   [:div.line
+    "running application on save?"]])
+
+(defslide bad-idea? [state]
+  [:div.left.left-10
+   [:h2 "Bad Idea? ... I don't know. Try it."]
+   (on 1 state
+       [:div.line.orange "Worried about"])
+   (on 1 state
+       [:div.line "High potential for instability"])
+   (on 2 state
+       [:div.line "burden of paying attention to load time side-effects"])
+   (on 3 state
+       [:div.line.green "Experience" ])   
+   (on 3 state
+       [:div.line "instantaneous feedback almost magical"])
+   (on 4 state
+       [:div.line "darn good ROI for writing reloadable code"])
+   (on 5 state
+       [:div.line.blue "Ultimately" ])
+   (on 5 state
+       [:div.line "\"Are you serious? we should be doing this all the time!\""])])
+
+(defslide the-trade-off [state]
+  [:div.center.top-10
+   [:div.blue "The trade-off"]
+   [:blockquote "You get: "
+    [:span.green "instantaneous feedback"]]
+   [:div.blue "in exchange for"]
+   [:blockquote
+    "writing " [:span.orange "reloadable code"]]])
+
+(defslide reloadable-code [state]
+  [:div.center.top-10
+   [:h2 [:span.green "Reloadable code"]
+    " is code that"]
+   [:div "on reload"]
+   [:br]
+   (on 1 state
+       [:div.line
+        [:span.green "behavior "] "of application has "
+        [:span.green "changed"]])
+   (on 2 state
+       [:div.line "application "
+        [:span.orange "state"]
+        " is "
+        [:span.orange "unchanged"]])])
+
+(defslide shiftin-responsibility [state]
+  [:div.center.top-15
+   [:h2 [:span.blue "It's all about the reloadable code"]]
+   [:div.line "If you want automated continuous hot code reloading"]
+   [:div.line "in an imperative context"]
+   [:div.line.orange "write reloadable code!"]])
+
+(defslide how-hard-write [state]
+  [:div.center.top-20
+   [:blockquote.orange "How hard is it to write reloadable code?"]])
+
+(defslide clojure-script-reloadable [state]
+  [:div.center.top-15
+   [:h2 [:span.blue "ClojureScript and its idioms very reloadable"]]
+   [:div.line "reloadability is a core value in Clojure"]])
+
+(defslide javascript-not-so-much [state]
+  [:div.left.left-10.top-10
+   [:h2 [:span.blue "JavaScript APIs not so much"]]
+   (on 1 state
+       [:div.line "APIs that rely on mutable state (DOM)"])
+   (on 2 state
+       [:div (highlighter "(.addEventListener ... )")])
+   (on 3 state
+       [:div.line "requires strategy to write reloadable code"])
+   (on 4 state
+       [:div.line "difficult in the large: large projects and teams"])])
+
+(defslide enter-reactjs [state]
+  [:div.left.left-10.top-10
+   [:h2 [:span.blue "Enter React.js"]]
+   (on 1 state [:div.line "Not everything is awesome, but React.js is"])
+   (on 2 state [:div.line "proper React.js code is inherently reloadable"])
+   (on 3 state [:div.line "solves the problem of interacting with the DOM"])
+   (on 4 state [:div.line "a component model that allows interacting with libraries and APIs in a way that is reloadable"])])
+
+(defslide clojurescript-heart-reactjs [state]
+  [:div.center.top-10
+   [:h2 [:span.blue "ClojureScript" [:span.orange " ❤ "] "React.js"]]
+   [:blockquote "The threshold"]
+   [:div.line "this combination tremendously simplifies writing reloadable code"]
+   [:div.line "the magic of instantaneous hot code loading today!"]
+   [:div.line "even in the imperative env of JavaScript!"]])
+
+(defslide reloadable-javascript [state]
+  [:div.center.top-10
+   [:h2 [:span.blue "live hot code reloading in JS?"]]
+   [:div.line "now with React, this can be done"]
+   [:div.line "beware of communities high investment in encapsulation patterns"]])
+
+(defslide dome [state]
+  [:div.center.top-5 
+   [:img {:src "img/dome.jpgg" ;; imgs/dome.jpg
+          :width 720
+          :height 537}] 
+   (only 1 state
+         [:div {:style {:fontSize "8em;"
+                        :position "absolute"
+                        :top "140px"   ;; 190
+                        :left "248px"  ;; 288
+                        :textShadow "0px 0px 20px #000"}}
+          "(" [:span {:style
+                      {:display "inline-block"
+                       :width "200px"}}] ")"])
+   (only 2 state
+         [:div
+          {:style {:position "absolute"
+                   :top "253px"  ;; 213
+                   :left "446px" ;; 366
+                   :opacity 0.5}}
+          [:img  {:src "imgs/Clojure-Logo.png"
+                  :width "210px"}]])])
+
+;; stage 1
+
+#_(prn @app-state)
+
+#_(dispatch! :advance)
+
+;; what experience do we want? What would be a dreamy experience?
+
+;; what trade-offs are we going to have to make in order to get that
+;; experience? What is the cost?
+
+;; My answer to these questions is Figwheel.
+
+;; change to terminal; stop cljsbuild and start figwheel.
+;; reload app to get figwheel connected.
+
+;; navigate to where we are.
+
+;; maybe instead of the examples below.
+
+(defslide bret-victor-1 [state]
+  #_(prn state)
+  [:div.center.top-20
+   [:blockquote
+    "A mustache addresses human needs by "
+    [:span #_.orange "amplifying"]
+    " human capabilities."]
+   [:div.blue "- Burt Reynolds"]])
+
+#_(dispatch! :advance)
+
+(defslide bret-victor-2 [state]
+  [:div.center.top-20
+   [:blockquote  "a beard converts what we"
+    [:span #_.orange " can do"]
+    [:br]
+    "into what we"
+    [:span #_.green " want to do"]]
+   [:div.blue "- Zach Galifianakis"]
+   #_[:div.left-20.left
+      (om/build ankha/inspector state)]])
+
+#_(defn add [a b] (+ a b))
+#_(prn (add 3 4))
+
+
+(defslide this-awesome [state]
+  [:div.center.top-20
+   [:blockquote  "Most awesome thing ever??"]
+   (on 1 state
+       [:div.line "maybe not, but a very useful tool"])
+   (on 1 state
+       [:div.line "especially for UI work"])])
+
+(defslide timely-feedback [state]
+  [:div.center.top-20
+   [:h2.orange "Timely feedback is important."]
+   (on 1 state
+       [:div.line "we should think more about automated continuous reloadability"])
+   (on 2 state
+       [:div.line "reloadability is a design value"])])
+
+(defslide qualities [state]
+  [:div.left.left-10.top-10
+   [:h2 "Qualities of hot reloading on file save"]
+   (on 1 state
+       [:div.line "natural interface (watch the kids)"])
+   (on 2 state
+       [:div.line "every editor can do it"])
+   (on 3 state
+       [:div.line "no complex editor specific REPL setup required"])
+   (on 4 state
+       [:div.line "keeps everything current"])
+   (on 5 state
+       [:div.line "different than peice meal REPL reloading"])])
+
+(defslide questions [state]
+  [:div.center.top-20
+   [:h2.orange "Questions?"]])
+
+
 
 (defslide hot-code1 [state]
   [:div.center.top-15
@@ -146,28 +430,6 @@
           [:img  {:src "imgs/Clojure-Logo.png"
                   :width "210px"}]])])
 
-(defslide dome [state]
-  [:div.center.top-5 
-   [:img {:src "img/dome.jpgg" ;; imgs/dome.jpg
-          :width 720
-          :height 537}] 
-   (only 1 state
-         [:div {:style {:fontSize "8em;"
-                        :position "absolute"
-                        :top "140px"   ;; 190
-                        :left "248px"  ;; 288
-                        :textShadow "0px 0px 20px #000"}}
-          "(" [:span {:style
-                      {:display "inline-block"
-                       :width "200px"}}] ")"])
-   (only 2 state
-         [:div
-          {:style {:position "absolute"
-                   :top "253px"  ;; 213
-                   :left "446px" ;; 366
-                   :opacity 0.5}}
-          [:img  {:src "imgs/Clojure-Logo.png"
-                  :width "210px"}]])])
 
 (defslide awesome [state]
   [:div.center.top-5
@@ -190,56 +452,6 @@
    [:blockquote "What experience do we want?"]])
 
 
-
-;; stage 1
-
-#_(prn @app-state)
-
-#_(dispatch! :advance)
-
-;; what experience do we want? What would be a dreamy experience?
-
-;; what trade-offs are we going to have to make in order to get that
-;; experience? What is the cost?
-
-;; My answer to these questions is Figwheel.
-
-;; change to terminal; stop cljsbuild and start figwheel.
-;; reload app to get figwheel connected.
-
-;; navigate to where we are.
-
-;; maybe instead of the examples below.
-
-(defslide bret-victor-1 [state]
-  #_(prn state)
-  [:div.center.top-20
-   [:blockquote
-    "A mustache addresses human needs by "
-    [:span #_.orange "amplifying"]
-    " human capabilities."]
-   [:div.blue "- Burt Reynolds"]])
-
-#_(dispatch! :advance)
-
-(defslide bret-victor-2 [state]
-  [:div.center.top-20
-   [:blockquote  "a beard converts what we"
-    [:span #_.orange " can do"]
-    [:br]
-    "into what we"
-    [:span #_.green " want to do"]]
-   [:div.blue "- Zach Galifianakis"]
-   #_[:div.left-20.left
-      (om/build ankha/inspector state)]])
-
-#_(defn add [a b] (+ a b))
-#_(prn (add 3 4))
-
-(defslide this-awesome [state]
-  [:div.center.top-20
-   [:blockquote  "This experience is "
-    [:span.orange " Far Out!"]]])
 
 (defslide what-worth [state]
   [:div.center.top-20
@@ -295,10 +507,6 @@
         [:span.orange "state"]
         " is "
         [:span.orange "unchanged"]])])
-
-(defslide how-hard-write [state]
-  [:div.center.top-10
-   [:blockquote "How hard is it to write reloadable code?"]])
 
 ;; moving the responsibility to the developers shoulders
 ;; and I'm saying that in an imperative context thats the
@@ -358,29 +566,6 @@
    [:div.line " have made writing reloadable code"]
    [:div.line " significantly easier."]])
 
-(defn highlight [data owner]
-  (reify
-    om/IDidMount
-    (did-mount [this]
-      (let [dom-node (om/get-node owner "code-ref")]
-        (.log js/console dom-node)
-        (.highlightBlock js/hljs dom-node)))
-    om/IDidUpdate
-    (did-update [this _ _]
-      (let [dom-node (om/get-node owner "code-ref")]
-        (.highlightBlock js/hljs dom-node)))
-    om/IRenderState
-    (render-state [this state]
-      (sab/html
-       [:pre.left
-        [:code {:className "clojure"
-                :ref "code-ref"}
-         data]
-        ]))))
-
-(defn highlighter [code]
-  (om/build highlight code))
-
 (defslide sample-program [state]
   [:div
    (highlighter
@@ -389,13 +574,13 @@
     [sablono.core :as sab :include-macros true]
     [om.core :as om :include-macros true]))
 
-(defonce app-state (atom 0))
+(defonce app-state (atom {:count 0}))
 
 (defn counter [state]
   (sab/html 
     [:div 
       [:h1 \"Count \" (:count state)]
-      [:a {:onClick #(swap! @app-state inc) \"inc\"]]]))
+      [:a {:onClick #(transact! state [:count] inc)} \"inc\"]]))
 
 (om/root 
   (fn [data owner]
@@ -404,13 +589,24 @@
   app-state
   {:target (. js/document (getElementById \"app\"))})")])
 
+(defslide better-code [state]
+  [:div.center.top-10
+   [:blockquote "Reloadable code is often better code"]
+   (on 1 state
+       [:div.live "movement towards the declarative"])
+   (on 2 state
+       [:div.line "minimization of unreloadable code sections"])])
+
+(defslide summary [state]
+  [:div.center.top-10
+   [:h3 "You can have automated continuous hot code reloading."]
+   [:div.line "you have to write reloadable code"]
+   [:div.line  "ClojureScript and React have made the cost of writing reloadable code negligable."]])
 
 
 (defslide the-how [state]
   [:div.center.top-10
    [:blockquote "Figwheel how?"]])
-
-
 
 (defslide wont-work [state]
   [:div.center.top-10

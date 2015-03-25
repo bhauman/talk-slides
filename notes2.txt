@@ -1,0 +1,570 @@
+S: Birth of Figwheel
+
+b: dissatisfied with the current feedback loop of SPA development
+
+
+
+
+Figwheel is a tool I wrote because I was seriously disatisfied with
+the rate at which I was getting feedback while working on browser
+based SPAs in ClojureScript.
+
+S: Current state of the art
+
+b: write code
+b: reload browser
+B: lose application state
+b: manipulate application into state need to test new behavior
+b: rinse and repeat
+
+b: stacatto experience that gets in the way of a flow of expression
+
+
+
+S: Immediate feedback from simple live reloads
+
+b: just reload the code into running application on save
+
+I really wanted to see the result of my code changes immediately in
+the running application.  So I thought I would give it a try in the
+simplest possible way and just reload the Compiled ClojureScript into
+the browser live after a file save.
+
+S: Bad Idea?
+
+b: potential for weirdness
+
+b: had to pay attention to load time side-effects
+b: instantaneous feedback almost magical experience
+b: ROI for writing reloadable code, pretty good
+b: actually worked pretty well
+
+b: Are you serious? we should be doing this all the time!
+
+Initially I thought it was probably a bad idea, but to my suprise this
+simple reloading worked pretty well. I had to pay attention to another
+dimension of my coding, namely I had to think more explicitely about
+the load time side effects of my code.  But the ROI of paying
+attention to these load time side effects paid off tremendously over
+and over again with magic experience instantaneous feedback as I
+worked on UI code.
+
+S: Trade off
+b: instantaneous feedback in exchange for writing reloadable code
+
+Maybe not a bad idea but rather a trade off.
+
+
+S: Reloadable code
+b: reloadable code slide
+
+When I say I had to pay attention to the load time side effects I mean
+that I had to write code in a way such that I got to see the new
+behavior instantly AND the state of the running porgram didn't change.
+
+I called this type of code, reloadable code.  You have to write
+reloadable code in order to benefit from the on save reload behavior
+of Figwheel.
+
+So the problem of code reloading is really a problem of writing
+reloadable code. If you write reloadable code, code reloading just
+falls out.
+
+S: ClojureScript and its idioms very reloadable
+
+b: reloadable code is a core value in Clojure
+b: history of design decisions have made ClojureScript
+   very amenable to hot reloading
+b: Lucky Google Closure doesn't reloy on the encapsulating module
+   pattern that is in vogue in the JavaScript community
+   i.e. just object literals
+
+
+It turns out that reloadablility has long been a core value in the
+Clojure world, many design decisions have led to ClojureScript being
+amenable to live reloading. Also we are lucky that google closure
+namespaces don't rely on the encapsulating module pattern that is so
+popular in JavaScript these days.  and thus the Google closure
+namespaces are reloadable.
+
+S: JavaScript APIs, frameworks and librarys don't play as nice
+
+b: APIs that rely on mutable state (DOM)
+b: the encapsulation patterns that create inpenatrable entities that
+   bundle mutable state and behavior
+   (prototypes are relaodable btw)
+
+b: doable but requires thinking and strategy to write reloadable
+   code (lowers ROI of reloadable code/instantaneous feedback)
+b: probably difficult in the large, large projects and teams
+
+
+So while ClojureScript idioms follow Clojure's and are thus reloadable
+the idioms and APIs of the host environment are not so much.
+
+* The many mutable stateful APIs
+* the frameworks
+* the encapsulation patterns that create inpenatrable entities that
+  bundle mutable state and behavior
+  (prototypes are relaodable btw)
+
+All this stuff is a bit difficult to manage across reloads
+such that new behavior is adopted and state is maintained.
+
+I was able to write reloadable code in this env, but it required decent
+amount thought and strategy to maintain reloadablility as a feature of
+the codebase. This works great for a single experienced developer but
+I can image it would be difficult for a larger team.
+
+
+But then something happened: React js burst on to the scene.
+
+S: Enter Reactjs
+
+b: Not everything is awesome, but Reactjs is.
+b: proper React js code is inherently reloadable
+
+Quite simpley if you write proper React js code you are writing
+reloadable code period.
+
+S: ClojureScript (heart) React
+
+b: the threshold
+
+b: this combination simplifies writing reloadable code
+b: comparatively little thought needs to be invested into writing
+reloadable code when you use react.
+b: the magic of instantaneous hot code loading today!
+b: even in the imperative env of JavaScript!
+
+
+So now the the combination of ClojureScript
+and React have created an eco-system where you can write reloadable
+code much much more easily that you could before.
+
+S: Reloadable JavaScript?
+
+b: this can be done
+b: communities high investment in encapsulation patterns are a barrier
+
+
+This will even work for JavaScript but I'm afraid that high investment
+the community has in encapsulation patterns that encapsulate behavior
+and mutable state will may make this difficult. But for those
+JavaScript developers who want to write reloadable code in JavaScript
+the time has never been better.
+
+
+S: dome slide
+
+
+Before we go any further. I want to show you my dome.
+
+Well this is my dome.
+
+...
+
+
+
+S: Most Awesome thing ever??
+
+b: nah, but a useful tool
+b: especially for UI work
+
+
+As you can see the experiences are very very different.
+
+I'm not saying that this is the most awesome thing ever.  But I will
+say that this is a useful tool that you can use to help you get
+your coding done.
+
+
+S: Timely feedback is important.
+
+b: we should think more about automated continuous reloadability
+(not just clojureists)
+b: realoadable code is a value
+
+
+S: Qualities of hot reloading on file save
+b: natural interface (watch the kids)
+b: every editor can do it
+b: no complex editor specific REPL setup required
+b: keeps everything current
+
+b: different than peice meal REPL reloading
+
+
+
+We should be thinking more about reloadability. All programming
+communities should be thinking about reloadability and automated
+continuous hot code reloading.  
+
+S: Reloadable code is better code?
+
+b: decent overlap between reloadable code and "good code"
+b: requires you to think twice about creating messes
+  : reduce the area of code that isn't reloadable
+     : top level side affects
+     : networks of mutable objects connected by the observer pattern
+     : etc.
+
+
+
+S: Why not use the REPL??
+
+Some of you may be wondering why not just use the REPL. First of all
+when I first wrote figwheel the ClojureScript REPL wasn't working that
+well. And while that is improved it still takes bunch of futzing
+around to get the repl working in such a that you can ship code from
+your editor to the REPL. So the REPL requires setup and specific
+editor setup and extra step to load code through this intemediary. I'm
+saying this is bad. I'm saying its different than the instantaneous
+experience of code loading on save. And most importantly save is a
+very simple interface that works across all editors and everyone knows
+how to do it.
+
+Also on save keeps everything current. 
+
+
+S: What is figwheel?
+
+Figwheel is service that watches and compiles your ClojureScript code
+and then reloads it into your running application.
+
+If I have to do all the work what exactly does figwheel do?
+
+While it seems that there is little for a file reloader to do if you
+are writing reloadable code, in actuallity there are quite a few
+features that are needed to provide a smooth code reloading experience
+for ClojureScript.
+
+
+S: Features
+
+So figwheel has grown from a simple feature set to a rather long list
+of features, all aimed at supporting ClojureScript development.
+
+---
+S: Live Code reloading
+Figwheel provides live code relaoding, watches and compiles your
+Clojurescript sources as you save them and then loads the changed
+source into the running application.
+
+----
+S: Only hot reloads code defined in the watched source-paths of the
+build.
+
+Doesn't reload files that aren't in the current project.  Lets say
+some dependency libraries are recompiled then figwheel won't reload
+those files.  They haven't changed and we can't speak to the
+reloadability of third party libraries.
+----
+S: Listens to .clj changes.
+
+Figwheel listens to changes in .clj files, it
+reloads changed files into memory, and then does dependency resolution
+to detect which cljs files have been affected by the change. This
+leads to instantaneous macro reapplication, which is pretty nice.
+
+You would normally have to reload these into a Clojure REPL that is
+attached to your watching compilation process to get this behavior or
+more likely shut down and restart your auto compiler.
+
+----
+S: Figwheel respects the dependency graph
+
+It won't load files that you haven't required. So if you are working
+on adn saving a file that isn't required by your appplication the
+changes wont get loaded.
+
+And when you do require new namespaces it loads all the appropriate
+dependencies.
+----
+S: Heads up display
+
+There is a browser based heads up display that informs you of compile
+time problems. I put a lot of effort into making sure this heads up
+display was non-intrusive to your your running application.
+
+----
+
+S: Doesn't load code that is generating warnings.
+
+----
+S: Multiple builds
+
+lein fighweel dev test
+
+will autocompile and both builds simultaneously.
+
+So you can have your tests running in one browser tab and your
+application running in another one.  Each build only getting the
+updated code that it needs.  This particular setup is a great testing
+setup that doesn't require you to install yet another js environment
+to run tests.
+
+This is very handy for several builds that share code that you would
+liek to work on at once and see how each appplication is responding to
+the code changes.
+
+----
+S: Code broadcast
+
+Not only can figwheel handle multiple builds it can handle an
+arbitrary number of clients.  This makes it easy to look at code
+changes in several browsers and devices at the same time.
+
+----
+S: REPL
+
+Figwheel as a tool is positioned such that it has alot of compile
+information about your code and a connection to the execution
+environment of your application, its just really in the perfect
+position to include a REPL as well.
+
+The figwheel REPL is different from other REPLs in that it shares
+compile information with the auto compilation process. So the figwheel
+REPL is aware of all the changes that you are making to your cljs
+files as well as what you type into the REPL.
+
+For instance if you do an (in-ns ...) and then a (cljs.user/dir) you
+will see that the ns is already loaded and populated.
+
+But more importantly the figwheel REPL provides some helper functions
+that poke through the clojurescript REPL to the underlying Clojure
+process that is handling the auto compilation of your code.
+
+These helper functions can help start and stop auto compilation
+processes without having to restart figwheel.
+
+For instance you can do a clean and a rebuild for a specific build id
+without having to restart figwheel.
+
+----
+S: Node js
+
+figwheel works with Node js now as well. This a different workflow as
+you aren't getting visual feedback.  But its really nice not having to
+restart Node for every code change.
+
+b: code sharing and isomophism
+b: React.renderToString
+
+And because of multiple builds figwheel can load your shared front end
+and back end code live into the server and the client environments.
+This is something that you can do today.... not some nebulous time in
+the future.  You can a model file and it is loaded live into your
+server and client, no cljx, no reader conditionals. Same code.
+
+This in addition to React.renderToString leads to an amazing unified
+live environment between server and client.  You have to experience it
+in order to get it.  I haven't experienced anything like it before.
+
+----
+
+^:figwheel-always
+^:figwheel-no-load
+^:figwheel-load
+
+
+
+
+
+Working with figwheel:
+
+Two basic ways to configure a project to use figwheel.
+
+::Diagram
+Use figwheel's built in server to serve your applications assets.
+
+::Diagram
+I beleive figwheel is more commonly used in conjunction with your own
+application server. In this case figwheel just sits off to the side
+telling your application that things have changed and then the
+figwheel client reloads the appropriate files.
+
+Configuration:
+
+You need to configure the server and the client:
+
+General server configuarion:
+
+General client configuration:
+
+
+
+
+TIPS and TRICKS
+Or the blog posts and documentation that I should have written.
+
+Defonce state atoms:
+
+(defonce app-state (atom {}))
+
+
+Non local reloads:
+So if you are only working on one file, having a React.render at the
+bottom of the file will work. It will rerender your changes.
+
+But when you are editing a namespace that doesn't contain that render
+call. Your changes won't be rerendered.
+
+Several strategies to get around this. The client side :on-jsload hook
+and touch your atom signaling that the app rerender.
+
+Another way to do this is to use ^:figwheel-always metadata on the main
+namespace.
+
+----
+React.render
+Appears that it rerenders all the nodes. This is great for most
+situations but not always.
+
+For instance CSS classes that contain transitions and animations can get
+retriggered on each reload and this can be super annoying.
+
+::Demo with slide code
+
+So what we wan to do is use a different method to trigger rerender,
+such as the counter in the app state method.
+
+We also want to make sure that the initial render call is called only
+once.
+
+
+----
+Initialization code needs to be called once:
+
+(.addEventListener js/document some-func-name)
+
+It's good to put this either in a `main` function that gets called once
+from your "index.html".
+
+Or put it in a defonce like this:
+
+(defonce setup-code
+  (do
+    (.addEventListener js/document ...)
+    true))
+
+Probably should make a `perform-once` macro for this top level idiom.
+
+
+----
+References to callbacks:
+
+Call by value can be a problem.
+
+(defn some-func-name [] ...)
+
+(.addEventListener js/document some-func-name)
+
+Solution: capture a reference:
+
+(.addEventListener js/document #(some-func-name))
+
+
+Testing ideas:
+
+A----
+:source-paths ["src" "test-src"]
+^:figwheel-always on your testrunner namespace.
+
+This automatically re-runs tests when a file changes and it runs it in
+the same environment as your application.
+
+This is really convenient in that you don't have to do any extra
+config to get a client side test enviroment up and running.  I'm sure
+you'll agree that this is pretty cool.  Considering what we used to
+have to do to get client side testing up and running.
+
+This could also be super convenient if your tests include ajax calls to
+your server.
+
+B----
+a test build that runs in a seperate browser tab
+
+simple to set up
+
+isolated from running application
+
+Not in your face. Which could be a feature.
+
+
+Play area:
+
+^:fighweel-load
+
+Sometimes you may want to reif and try some code out. This code is
+going to be thrown away.
+
+You can create a new file and add a ^:figwheel load to it and then it
+will be evaluated in the client environment. You can then require
+other files and test things out.
+
+
+Autoload false:
+
+After all this you may want all the features that figwheel provides
+but not the hot loading part.
+Things like the autocompile, heads up display, and working REPL with
+compilation controls.
+
+
+
+You can disable hot loading by adding
+
+:autoload  false
+
+to the client configuration.
+
+
+
+Production build:
+
+In the Figwheel REPL you can do a
+(clean-build prod)
+(build-once prod)
+
+Without shutting the figwheel process down.
+
+
+Dev wrapper pattern:
+
+
+
+
+Prod wrapper pattern:
+
+
+
+
+
+
+
+Configuration:
+
+various flags and what they mean.
+
+
+
+
+
+
+
+
+
+lein new figwheel hello-world -- --om
+
+
+
+
+
+
+
+
+
+
+
+
