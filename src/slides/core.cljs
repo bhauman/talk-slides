@@ -786,7 +786,7 @@
 
 (fw/start {
            :websocket-url "ws://localhost:3449/figwheel-ws"
-           ;; :autoload false
+           :autoload false
            :on-jsload (fn []
                         (swap! app-state
                                update-in
