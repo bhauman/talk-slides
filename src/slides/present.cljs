@@ -4,10 +4,14 @@
 
 (defmulti slide (fn [a] a))
 
+(defmethod slide :default [s]
+  (sab/html [:div "empty"]))
+
 (defn section [nm state content]
   (sab/html
    [:section
-    {:style {:display "block"} :key nm
+    {:style {:transform (str "translateX(" (* (:spos state) 960)  "px)")}
+     :key nm
      :className
      (str
       "dbg-border bg-color "

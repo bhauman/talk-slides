@@ -5,9 +5,11 @@
      [ankha.core :as ankha]
      [sablono.core :as sab :include-macros true]
      [slides.present :refer [on only section slide]]
-     [figwheel.client :as fw])
+     [figwheel.client :as fw]
+     [cljs.core.async :as async :refer [<! timeout]])
     (:require-macros
-     [slides.present :refer [defslide]]))
+     [slides.present :refer [defslide]]
+     [cljs.core.async.macros :refer [go]]))
 
 (enable-console-print!)
 
@@ -18,7 +20,6 @@
     om/IDidMount
     (did-mount [this]
       (let [dom-node (om/get-node owner "code-ref")]
-        (.log js/console dom-node)
         (.highlightBlock js/hljs dom-node)))
     om/IDidUpdate
     (did-update [this _ _]
@@ -39,7 +40,6 @@
 
 (def slide-list [:intro
                  :context
-
                  :figwheel-birth
                  :state-of-the-art
                  :staccato
@@ -61,39 +61,7 @@
                  :this-awesome
                  :timely-feedback
                  :qualities
-
                  :questions])
-
-
-(comment
-  :hot-code1                 
-  :hot-code
-  :imperative-context
-  :feedback
-  :fun
-  :dome
-  #_:awesome
-  :not-awesome
-  :what-experience
-  :this-awesome
-  :what-worth
-  :impending-trade-off
-  :reloading-two-ways
-  
-  :the-trade-off
-  :reloadable-code
-  :how-hard-write
-  :problems-imperative
-  :cost-benefit
-  :taming-the-beast
-  :clojurescript
-  :api-problem
-  :enter-react
-  :react
-  :sample-program
-  :better-code
-  :the-how)
-
 
 (defonce app-state
   (atom { :counter 0
@@ -101,6 +69,17 @@
           :animate true}))
 
 ;; slide definitions
+
+(def cubes [{:x 0
+             :y 0
+             :z 0}
+            {:x 1
+             :y 0
+             :z 0}
+            {:x 2
+             :y 0
+             :z 0}            
+            ])
 
 (defslide intro [state]
   [:div.center.top-15
@@ -273,6 +252,8 @@
 
 #_(dispatch! :advance)
 
+#_(dispatch! :back)
+
 ;; what experience do we want? What would be a dreamy experience?
 
 ;; what trade-offs are we going to have to make in order to get that
@@ -341,7 +322,7 @@
    (on 4 state
        [:div.line "keeps everything current"])
    (on 5 state
-       [:div.line "different than peice meal REPL reloading"])])
+       [:div.line "different than piecemeal REPL reloading"])])
 
 (defslide questions [state]
   [:div.center.top-20
@@ -695,15 +676,19 @@
    [:div
     "Where writing reloadable code has gotten much simpler."]])
 
-;; REMOVE this
-#_(defslide todos [state]
-  (om/build todos-component (:todos-state state)))
-
 (defn get-slide [data]
   (slide (get slide-list
               (mod (:counter data) (count slide-list)))
          data))
 
+(defn anim-transition []
+  (go
+    (swap! app-state assoc :trans-z -10000)
+    (<! (timeout 1000))
+    (swap! app-state assoc :trans-z 0
+                           #_:rot-x   #_(+ 360 (:rot-x @app-state)))))
+
+#_(prn @app-state)
 ;; this can be a react component
 
 ;; handle keyboard events
@@ -714,9 +699,10 @@
                 (fn [s]
                   (let [x (:counter s)]
                     (assoc s
-                           :last-count x
                            :ins-counter 0
-                           :counter (inc x))))))
+                           :counter (inc x)))))
+  ;; effect
+  #_(anim-transition))
 
 (defmethod dispatch :internal-advance [_ data]
   (om/transact! data []
@@ -736,7 +722,6 @@
                 (fn [s]
                   (let [x (:counter s)]
                     (assoc s
-                           :last-count x
                            :counter
                            (if (zero? x) 0 (dec x)))))))
 
@@ -763,18 +748,21 @@
                         :fontSize "0.4em"}}
     (om/build ankha/inspector data)]))
 
-(defn last-slide [data]
-  (assoc data
-         :counter (:last-count data)
-         :last-slide true))
+(defn translation [data]
+  
+  (str "translateX(" (* -960 (:counter data)) "px) "
+       (when (:trans-z data)
+         (str "translateZ(" (:trans-z data) "px) "))
+       (when (:rot-x data)
+         (str "rotateZ(" (:rot-x data) "deg)"))))
 
 (defn slider [data]
   (sab/html
    [:div.slides
-    (if (:last-count data)
-     (get-slide (last-slide data))
-     [:span]) 
-    (get-slide data)]))
+    [:div.slide-world {:style {:transform-origin (str (* 960 (:counter data))  "px 300px")
+                               :transform (translation data)
+                               }}
+     (map-indexed #(slide %2 (assoc data :spos %1)) slide-list)]]))
 
 #_(swap! app-state update-in [:animate] not)
 
@@ -785,7 +773,7 @@
    "keyup"
    (fn [e] (key-handler e)))
 
-  (om/root
+    (om/root
    (fn [data owner]
      (reify om/IRender
        (render [_]
