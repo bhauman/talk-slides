@@ -1,0 +1,38 @@
+
+/* 710x595 */
+.slides {
+    width: 960px;
+    height: 640px;
+    margin: auto;
+    overflow: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+
+    /* zoom: 0.740; */
+}
+
+.slide-world {
+    width: 100%;
+    height: 100%; 
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform: translateX(-0px); 
+    -webkit-transition: -webkit-transform 1s; 
+}
+
+
+.slides section {
+    display: block;
+    width: 960px;
+    height: 640px;
+    -webkit-transform-style: preserve-3d;
+    position: absolute;
+    padding: 20px;
+    overflow: hidden;
+}
+
+
+@media (max-width: 600px) {
+  .slides {
+      zoom: 0.5;
+  }
+}
