@@ -4,7 +4,7 @@
      [om.dom :as dom :include-macros true]
      [ankha.core :as ankha]
      [sablono.core :as sab :include-macros true]
-     [slides.present :refer [on only section slide]]
+     [slides.present :refer [on only section]]
      [figwheel.client :as fw]
      [cljs.core.async :as async :refer [<! timeout]])
     (:require-macros
@@ -13,7 +13,12 @@
 
 (enable-console-print!)
 
-(declare get-slide dispatch!)
+(declare get-slide dispatch! set-slide)
+
+(defmulti slide (fn [a] a))
+
+(defmethod slide :default [s]
+  (sab/html [:div "empty"]))
 
 (defn highlight [data owner]
   (reify
@@ -60,8 +65,10 @@
                  :bret-victor-2
                  :this-awesome
                  :timely-feedback
-                 :qualities
+                 #_:qualities
                  :questions])
+
+#_(set-slide :intro)
 
 (defonce app-state
   (atom { :counter 0
@@ -271,6 +278,8 @@
 ;; maybe instead of the examples below.
 
 (defslide bret-victor-1 [state]
+  ;; live code transformations!!
+  ;; instantaneous MACRO and reloading
   #_(prn state)
   [:div.center.top-20
    [:blockquote
@@ -279,7 +288,25 @@
     " human capabilities."]
    [:div.blue "- Burt Reynolds"]])
 
-#_(dispatch! :advance)
+;; heads up display
+;; green circle
+
+#_(this is cool)
+
+;; doesn't load code with warnings (save a couple of times)
+
+#_(defn)
+
+;; SHOW SECOND Browser
+
+#_(set-slide :bret-victor-2)
+
+;; CSS reloading
+;; make zoom in Safari work slides.css
+;; font-size in style.css
+
+;; add rotation to animation effect
+;; change timing in animation effect
 
 (defslide bret-victor-2 [state]
   [:div.center.top-20
@@ -292,7 +319,12 @@
    #_[:div.left-20.left
       (om/build ankha/inspector state)]])
 
+;; CLOSE Safari
+
+;; arbitrary coding
+
 #_(defn add [a b] (+ a b))
+
 #_(prn (add 3 4))
 
 
@@ -688,10 +720,18 @@
     (swap! app-state assoc :trans-z -10000)
     (<! (timeout 1000))
     (swap! app-state assoc :trans-z 0
-                           #_:rot-x   #_(+ 360 (:rot-x @app-state)))))
+                           ;;:rot-x   (+ 360 (:rot-x @app-state))
+           )))
 
 #_(prn @app-state)
 ;; this can be a react component
+
+(defn set-slide [id]
+    (swap! app-state
+           assoc
+           :ins-counter 0
+           :counter (ffirst (filter #(= id (second %)) (map-indexed vector slide-list))))
+    (anim-transition))
 
 ;; handle keyboard events
 (defmulti dispatch identity)
@@ -755,12 +795,12 @@
        (when (:trans-z data)
          (str "translateZ(" (:trans-z data) "px) "))
        (when (:rot-x data)
-         (str "rotateZ(" (:rot-x data) "deg)"))))
+           (str "rotateZ(" (:rot-x data) "deg)"))))
 
 (defn slider [data]
   (sab/html
    [:div.slides
-    [:div.slide-world {:style {;; :transform-origin (str (* 960 (:counter data))  "px 300px")
+    [:div.slide-world {:style {:-webkit-transform-origin (str (* 960 (:counter data))  "px 300px")
                                :-webkit-transform (translation data)
                                }}
      (map-indexed #(slide %2 (assoc data :spos %1)) slide-list)]]))

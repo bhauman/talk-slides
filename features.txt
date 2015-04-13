@@ -5,10 +5,13 @@ doesn't load warninged code
 broadcast
 css reloading
 
+depedencies
+
 multiple builds
 ^:figwheel-always
 ^:figwheel-no-load
 ^:figwheel-load
+
 repl
 - shares environment
 - fig-status
