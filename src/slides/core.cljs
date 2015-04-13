@@ -54,7 +54,7 @@
                  :javascript-not-so-much
                  :enter-reactjs
                  :clojurescript-heart-reactjs
-                 :reloadable-javascript
+                 #_:reloadable-javascript
                  :dome
                  :bret-victor-1
                  :bret-victor-2
@@ -247,6 +247,8 @@
                   :width "210px"}]])])
 
 ;; stage 1
+
+;; S: I'm now using figwheel reloading
 
 #_(prn @app-state)
 
@@ -749,8 +751,7 @@
     (om/build ankha/inspector data)]))
 
 (defn translation [data]
-  
-  (str "translateX(" (* -960 (:counter data)) "px) "
+  (str " translateX(" (* -960 (:counter data)) "px) "
        (when (:trans-z data)
          (str "translateZ(" (:trans-z data) "px) "))
        (when (:rot-x data)
@@ -759,8 +760,8 @@
 (defn slider [data]
   (sab/html
    [:div.slides
-    [:div.slide-world {:style {:transform-origin (str (* 960 (:counter data))  "px 300px")
-                               :transform (translation data)
+    [:div.slide-world {:style {;; :transform-origin (str (* 960 (:counter data))  "px 300px")
+                               :-webkit-transform (translation data)
                                }}
      (map-indexed #(slide %2 (assoc data :spos %1)) slide-list)]]))
 
@@ -773,7 +774,7 @@
    "keyup"
    (fn [e] (key-handler e)))
 
-    (om/root
+  (om/root
    (fn [data owner]
      (reify om/IRender
        (render [_]
@@ -783,6 +784,7 @@
            #_(inspect-data data)]))))
    app-state
    {:target (. js/document (getElementById "app"))}))
+
 
 (fw/start {
            :websocket-url "ws://localhost:3449/figwheel-ws"

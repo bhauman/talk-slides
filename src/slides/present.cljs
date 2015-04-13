@@ -10,7 +10,7 @@
 (defn section [nm state content]
   (sab/html
    [:section
-    {:style {:transform (str "translateX(" (* (:spos state) 960)  "px)")}
+    {:style {:-webkit-transform (str "translateX(" (* (:spos state) 960)  "px)")}
      :key nm
      :className
      (str
