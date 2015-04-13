@@ -1,7 +1,9 @@
 (ns slides.present)
 
-(defmacro defslide [nm bindings & body]
-  `(defmethod slide ~(keyword nm) [_# state#]
+(defmacro defslide [nm bindings body]
+  `(defmethod slides.core/slide ~(keyword nm) [_# state#]
      (let [~bindings [state#]]
        (section ~(name nm) state#
-                (sab/html (do ~@body))))))
+                (sab/html ~body)))))
+
+
