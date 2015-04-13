@@ -93,6 +93,7 @@ html {
     margin: auto;
     overflow: hidden;
     perspective: 1000px;
+    -webkit-perspective: 1000px;
 
     /* zoom: 0.740; */
 }
@@ -102,7 +103,6 @@ html {
     height: 100%;
     -webkit-transform-style: preserve-3d;
     -webkit-transform: translateX(-0px);
-    
     -webkit-transition: -webkit-transform 1s; 
 }
 
