@@ -2,12 +2,14 @@ live reloading
 heads up display
 doesn't load warninged code
 
+clj reloading
 broadcast
 css reloading
 
 depedencies
 
 multiple builds
+
 ^:figwheel-always
 ^:figwheel-no-load
 ^:figwheel-load
@@ -19,7 +21,6 @@ repl
 - clean build
 - build once
 - repl switch
-
 
 nodejs
 

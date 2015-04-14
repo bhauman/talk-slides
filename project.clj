@@ -21,12 +21,22 @@
   
   :cljsbuild {
     :builds [{:id "dev"
-              :source-paths ["src" #_"dev_src"]
+              :source-paths ["src" "dev_src"]
               :compiler {:output-to "resources/public/js/compiled/slides.js"
                          :output-dir "resources/public/js/compiled/out"
                          :optimizations :none
-                         :main slides.core
+                         :main slides.dev
                          :asset-path "js/compiled/out"
+                         :source-map true
+                         ;; :source-map-timestamp true
+                         :cache-analysis true }}
+             {:id "test"
+              :source-paths ["src" "test"]
+              :compiler {:output-to "resources/public/js/tests/test.js"
+                         :output-dir "resources/public/js/tests/out"
+                         :optimizations :none
+                         :main slides.test-runner
+                         :asset-path "js/tests/out"
                          :source-map true
                          ;; :source-map-timestamp true
                          :cache-analysis true }}

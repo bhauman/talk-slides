@@ -77,17 +77,6 @@
 
 ;; slide definitions
 
-(def cubes [{:x 0
-             :y 0
-             :z 0}
-            {:x 1
-             :y 0
-             :z 0}
-            {:x 2
-             :y 0
-             :z 0}            
-            ])
-
 (defslide intro [state]
   [:div.center.top-15
    [:h1 "Developing ClojureScript with "
@@ -825,11 +814,11 @@
    app-state
    {:target (. js/document (getElementById "app"))}))
 
+#_(fw/start {
+             :websocket-url "ws://localhost:3449/figwheel-ws"
+             ;; :autoload false
+             :on-jsload (fn []
+                          (swap! app-state
+                                 update-in
+                                 [:__fig-counter] inc))})
 
-(fw/start {
-           :websocket-url "ws://localhost:3449/figwheel-ws"
-           :autoload false
-           :on-jsload (fn []
-                        (swap! app-state
-                               update-in
-                               [:__fig-counter] inc))})
