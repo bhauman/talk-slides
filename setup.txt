@@ -12,6 +12,7 @@ ensure that autoload is working for other windows
 close emacs start fresh.
 load:
 slides/core.cljs
+slides/present.clj,
 dev_src/dev.cljs,
 test_runner.cljs,
 core_test.cljs
