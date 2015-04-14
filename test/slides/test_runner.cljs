@@ -24,8 +24,8 @@
            (+ (:pass m) (:fail m) (:error m)) "assertions.")
   (println (:fail m) "failures," (:error m) "errors.")
   (if (< 0 (+ (:fail m) (:error m)))
-    (change-favicon-to-color "#d00")
-    (change-favicon-to-color "#0d0")))
+    (change-favicon-to-color "#d00")  
+    (change-favicon-to-color "#0d0"))) ;;<<-- change color
 
 (defn runner []
   (test/run-tests

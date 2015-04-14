@@ -1,0 +1,18 @@
+have figwheel open in chrome
+$ lein figwheel dev test
+open index.html and test.html tabs in chrome
+
+open index.html in Safari
+
+ensure autoload false is commented out reload chrome index.html
+browser such that autoload is not working
+
+ensure that autoload is working for other windows
+
+close emacs start fresh.
+load:
+slides/core.cljs
+dev_src/dev.cljs,
+test_runner.cljs,
+core_test.cljs
+

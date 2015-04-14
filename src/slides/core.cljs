@@ -316,6 +316,37 @@
 
 #_(prn (add 3 4))
 
+;; MULTIPLE builds
+
+;; testing
+(defn translation [data]
+  ;; introduce error 
+  (str " translateX(" (* -960 (:counter data)) "px) "
+       (when (:trans-z data)
+         (str "translateZ(" (:trans-z data) "px) "))
+       (when (:rot-x data)
+           (str "rotateZ(" (:rot-x data) "deg)"))))
+
+;; demo that code is loaded into correct projects
+
+;; modify test-runner.cljs (show tabs)
+;; modify slides/core.cljs (show tabs)
+
+;; goto repl
+
+(comment
+  (fig-status)
+  (switch-to-build test)
+
+  ;; swtich to test repl
+  )
+
+;; mention repl shares state with compilation process
+
+
+
+
+
 
 (defslide this-awesome [state]
   [:div.center.top-20
@@ -778,13 +809,6 @@
                         :left "0px"
                         :fontSize "0.4em"}}
     (om/build ankha/inspector data)]))
-
-(defn translation [data]
-  (str " translateX(" (* -960 (:counter data)) "px) "
-       (when (:trans-z data)
-         (str "translateZ(" (:trans-z data) "px) "))
-       (when (:rot-x data)
-           (str "rotateZ(" (:rot-x data) "deg)"))))
 
 (defn slider [data]
   (sab/html
