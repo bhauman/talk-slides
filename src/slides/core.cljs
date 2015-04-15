@@ -227,7 +227,7 @@
    (only 1 state
          [:div {:style {:fontSize "8em;"
                         :position "absolute"
-                        :top "140px"   ;; 190
+                        :top "100px"   ;; 190
                         :left "248px"  ;; 288
                         :textShadow "0px 0px 20px #000"}}
           "(" [:span {:style
