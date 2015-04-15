@@ -226,7 +226,7 @@
           :width 720
           :height 537}] 
    (only 1 state
-         [:div {:style {:fontSize "8em;"
+         [:div {:style {:fontSize "8em"
                         :position "absolute"
                         :top "100px"   ;; 135
                         :left "248px"  ;; 292
