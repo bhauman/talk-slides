@@ -255,7 +255,7 @@
 (defslide bret-victor-1 [state]
   ;; live code transformations!!
   ;; instantaneous MACRO and reloading
-  #_(prn state)
+  #_(prn "Counter" (:counter state))
   [:div.center.top-15
    [:blockquote
     "A mustache addresses human needs by "
