@@ -227,8 +227,8 @@
    (only 1 state
          [:div {:style {:fontSize "8em;"
                         :position "absolute"
-                        :top "100px"   ;; 190
-                        :left "248px"  ;; 288
+                        :top "100px"   ;; 135
+                        :left "248px"  ;; 292
                         :textShadow "0px 0px 20px #000"}}
           "(" [:span {:style
                       {:display "inline-block"
