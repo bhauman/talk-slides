@@ -7,7 +7,7 @@
     overflow: hidden;
     perspective: 1000px;
     /* ZOOM ERROR */
-    /* -webkit-perspective: 1000px; */
+    -webkit-perspective: 1000px;
 
     /* zoom: 0.740; */
 }

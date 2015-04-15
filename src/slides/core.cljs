@@ -270,16 +270,21 @@
 
 ;; doesn't load code with warnings (save a couple of times)
 
-#_(defn)
-
 ;; SHOW SECOND Browser
 ;; BROADCAST
+
+(defn anim-transition []
+  (go
+    (swap! app-state assoc :trans-z -10000)
+    (<! (timeout 1000))
+    (swap! app-state assoc :trans-z 0
+                           ;; :rot-x   (+ 360 (:rot-x @app-state))
+                           )))
 
 #_(set-slide :bret-victor-2)
 
 ;; CSS reloading
 ;; make zoom in Safari work slides.css
-;; font-size in style.css
 
 ;; add rotation to animation effect
 ;; change timing in animation effect
@@ -721,14 +726,6 @@
   (slide (get slide-list
               (mod (:counter data) (count slide-list)))
          data))
-
-(defn anim-transition []
-  (go
-    (swap! app-state assoc :trans-z -10000)
-    (<! (timeout 1000))
-    (swap! app-state assoc :trans-z 0
-                           ;;:rot-x   (+ 360 (:rot-x @app-state))
-           )))
 
 #_(prn @app-state)
 ;; this can be a react component
