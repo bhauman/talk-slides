@@ -1,5 +1,5 @@
-have figwheel open in chrome
-$ lein figwheel dev test
+have figwheel github page open in chrome
+$ rlwrap lein figwheel dev test
 open index.html and test.html tabs in chrome
 
 open index.html in Safari
@@ -16,4 +16,5 @@ slides/present.clj,
 dev_src/dev.cljs,
 test_runner.cljs,
 core_test.cljs
+
 
