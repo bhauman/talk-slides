@@ -14,7 +14,7 @@
      :key nm
      :className
      (str
-      "dbg-border bg-color "
+      "dbg-borde bg-color "
       (if (:last-slide state)
         (str "last"
              (when (:animate state)
