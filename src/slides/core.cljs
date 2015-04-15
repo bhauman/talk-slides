@@ -110,7 +110,7 @@
    (on 4 state [:div.line "Manipulate application back into state needed"])
    (on 5 state [:div.line "Test/verify behavior"])
    (on 6 state [:div.line "Rinse and "
-                [:span #_.upside-down " repeat"]])])
+                [:span.upside-down " repeat"]])])
 
 (defslide staccato [state]
   [:div.center.top-20
