@@ -30,6 +30,10 @@ html {
     -webkit-animation-duration: 0.5s;    
 }
 
+.larger {
+    font-size: 1.3em;
+}
+
 .center {
     text-align:center;
 }

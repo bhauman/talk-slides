@@ -270,12 +270,12 @@
   ;; live code transformations!!
   ;; instantaneous MACRO and reloading
   #_(prn state)
-  [:div.center.top-20
+  [:div.center.top-15
    [:blockquote
     "A mustache addresses human needs by "
     [:span #_.orange "amplifying"]
     " human capabilities."]
-   [:div.blue "- Burt Reynolds"]])
+   [:div.larger.blue "- Burt Reynolds"]])
 
 ;; heads up display
 ;; green circle
@@ -298,13 +298,13 @@
 ;; change timing in animation effect
 
 (defslide bret-victor-2 [state]
-  [:div.center.top-20
+  [:div.center.top-15
    [:blockquote  "a beard converts what we"
     [:span #_.orange " can do"]
     [:br]
     "into what we"
     [:span #_.green " want to do"]]
-   [:div.blue "- Zach Galifianakis"]
+   [:div.larger.blue "- Zach Galifianakis"]
    #_[:div.left-20.left
       (om/build ankha/inspector state)]])
 
