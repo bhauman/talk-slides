@@ -321,7 +321,7 @@
 
 ;; demo that code is loaded into correct projects
 
-;; modify test-runner.cljs (show tabs)
+;; modify core-test.cljs (show tabs)
 ;; modify slides/core.cljs (show tabs)
 
 ;; goto repl
