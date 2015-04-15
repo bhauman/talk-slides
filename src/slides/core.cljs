@@ -252,20 +252,6 @@
 
 #_(dispatch! :back)
 
-;; what experience do we want? What would be a dreamy experience?
-
-;; what trade-offs are we going to have to make in order to get that
-;; experience? What is the cost?
-
-;; My answer to these questions is Figwheel.
-
-;; change to terminal; stop cljsbuild and start figwheel.
-;; reload app to get figwheel connected.
-
-;; navigate to where we are.
-
-;; maybe instead of the examples below.
-
 (defslide bret-victor-1 [state]
   ;; live code transformations!!
   ;; instantaneous MACRO and reloading
