@@ -11,6 +11,21 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.upside-down {
+    -webkit-transition: -webkit-transform 1s;
+    -webkit-transform: rotate(-180deg);
+    position: absolute;
+    padding-right: 10px;
+}    
+
+.upside-right {
+    -webkit-transition: -webkit-transform 1s;
+    -webkit-transform: rotate(0deg);
+    position: absolute;    
+    display: inline-block;
+    padding-left: 10px;
+}
+
 * {
     box-sizing: inherit;
 }
