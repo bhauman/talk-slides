@@ -22,7 +22,7 @@
 
   :cljsbuild {
     :builds [{:id "dev"
-              :source-paths ["src" "dev_src" "../crashverse/src"]
+              :source-paths ["src" "dev_src"]
               :compiler {:output-to "resources/public/js/compiled/slides.js"
                          :output-dir "resources/public/js/compiled/out"
                          :optimizations :none

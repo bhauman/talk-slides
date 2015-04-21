@@ -30,13 +30,12 @@
     overflow: hidden;
 }
 
-
 @media (max-width: 600px) {
   .slides {
       zoom: 0.5;
   }
   .crashverse .slides {
-      zoom: 0.7;
+      zoom: 0.6;
       width: 600px;
   }
   .crashverse .slides section {
