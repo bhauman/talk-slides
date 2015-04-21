@@ -234,8 +234,8 @@
    (only 1 state
          [:div {:style {:fontSize "8em"
                         :position "absolute"
-                        :top "100px"   ;; 135
-                        :left "248px"  ;; 292
+                        :top "135px"   ;; 135
+                        :left "292px"  ;; 292
                         :textShadow "0px 0px 20px #000"}}
           "(" [:span {:style
                       {:display "inline-block"
@@ -253,16 +253,9 @@
 
 #_(dispatch! :advance)
 
-(defslide crashverse [state]
-  [:div.board-center (if (= (current-slide-key state) :crashverse)
-            (om/build crash/game-board (:game state))
-            [:span])])
-
 ;; S: I'm now using figwheel reloading
 
 #_(prn @app-state)
-
-#_(dispatch! :back)
 
 (defslide bret-victor-1 [state]
   ;; live code transformations!!
@@ -282,8 +275,12 @@
 
 ;; doesn't load code with warnings (save a couple of times)
 
+#_(dispatch! :advance)
+
 ;; SHOW SECOND Browser
 ;; BROADCAST
+
+#_(set-slide :crashverse)
 
 (defn anim-transition []
   (go
@@ -293,7 +290,12 @@
                            ;; :rot-x   (+ 360 (:rot-x @app-state))
                            )))
 
-#_(set-slide :bret-victor-2)
+
+
+(defslide crashverse [state]
+  [:div.board-center (if (= (current-slide-key state) :crashverse)
+            (om/build crash/game-board (:game state))
+            [:span])])
 
 ;; CSS reloading
 ;; make zoom in Safari work slides.css
