@@ -54,7 +54,7 @@
                  :bad-idea?
                  :the-trade-off
                  :reloadable-code
-                 :shiftin-responsibility
+                 #_:shiftin-responsibility
                  :how-hard-write
                  :clojure-script-reloadable
                  :javascript-not-so-much
@@ -346,10 +346,6 @@
   )
 
 ;; mention repl shares state with compilation process
-
-
-
-
 
 (defslide this-awesome [state]
   [:div.center.top-20
@@ -826,7 +822,7 @@
      (reify om/IRender
        (render [_]
          (sab/html
-          [:div.bg-color 
+          [:div {:className (str "bg-color " (name (or (current-slide-key data) "")))} 
            (slider data)
            #_(inspect-data data)]))))
    app-state

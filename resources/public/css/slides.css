@@ -35,4 +35,11 @@
   .slides {
       zoom: 0.5;
   }
+  .crashverse .slides {
+      zoom: 0.7;
+      width: 600px;
+  }
+  .crashverse .slides section {
+      width: auto;
+  }
 }
