@@ -7,10 +7,10 @@
 (defmethod slide :default [s]
   (sab/html [:div "empty"]))
 
-(defn section [nm state content]
+(defn section [nm state pos content]
   (sab/html
    [:section
-    {:style {:-webkit-transform (str "translateX(" (* (:spos state) 960)  "px)")}
+    {:style {:-webkit-transform (str "translateX(" (* pos 960)  "px)")}
      :key nm
      :className
      (str

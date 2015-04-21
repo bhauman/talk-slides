@@ -6,7 +6,8 @@
      [sablono.core :as sab :include-macros true]
      [slides.present :refer [on only section]]
      [figwheel.client :as fw]
-     [cljs.core.async :as async :refer [<! timeout]])
+     [cljs.core.async :as async :refer [<! timeout]]
+     [crashverse.core :as crash])
     (:require-macros
      [slides.present :refer [defslide]]
      [cljs.core.async.macros :refer [go]]))
@@ -61,6 +62,7 @@
                  :clojurescript-heart-reactjs
                  #_:reloadable-javascript
                  :dome
+                 :crashverse
                  :bret-victor-1
                  :bret-victor-2
                  :this-awesome
@@ -73,7 +75,11 @@
 (defonce app-state
   (atom { :counter 0
           :ins-counter 0
-          :animate true}))
+          :animate true
+          :game crash/initial-app-state}))
+
+(defn current-slide-key [state]
+  (get slide-list (:counter state)))
 
 ;; slide definitions
 
@@ -245,11 +251,16 @@
 
 ;; stage 1
 
+#_(dispatch! :advance)
+
+(defslide crashverse [state]
+  [:div.board-center (if (= (current-slide-key state) :crashverse)
+            (om/build crash/game-board (:game state))
+            [:span])])
+
 ;; S: I'm now using figwheel reloading
 
 #_(prn @app-state)
-
-#_(dispatch! :advance)
 
 #_(dispatch! :back)
 
@@ -335,7 +346,6 @@
   )
 
 ;; mention repl shares state with compilation process
-
 
 
 
@@ -799,9 +809,8 @@
   (sab/html
    [:div.slides
     [:div.slide-world {:style {:-webkit-transform-origin (str (* 960 (:counter data))  "px 300px")
-                               :-webkit-transform (translation data)
-                               }}
-     (map-indexed #(slide %2 (assoc data :spos %1)) slide-list)]]))
+                               :-webkit-transform (translation data) }}
+     (map-indexed #(slide %2 data %1) slide-list)]]))
 
 #_(swap! app-state update-in [:animate] not)
 

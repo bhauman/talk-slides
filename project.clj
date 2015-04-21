@@ -10,7 +10,8 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [sablono "0.3.4"]
                  [ankha "0.1.4"]                 
-                 [org.omcljs/om "0.8.8"]]
+                 [org.omcljs/om "0.8.8"]
+                 [crashverse "0.1.0-SNAPSHOT"]]
 
   :plugins [[lein-cljsbuild "1.0.4"]
             [lein-figwheel "0.2.5"]]
@@ -18,10 +19,10 @@
   :source-paths ["src"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled"]
-  
+
   :cljsbuild {
     :builds [{:id "dev"
-              :source-paths ["src" "dev_src"]
+              :source-paths ["src" "dev_src" "../crashverse/src"]
               :compiler {:output-to "resources/public/js/compiled/slides.js"
                          :output-dir "resources/public/js/compiled/out"
                          :optimizations :none
